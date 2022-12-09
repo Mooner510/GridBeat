@@ -25,7 +25,9 @@ namespace Musics {
             spriteRenderer.color = ClickColor;
             yield return new WaitForSecondsRealtime(noteTime);
             obj.transform.DOScale(Vector3.one * 2.25f, noteTime).SetEase(Ease.OutCubic);
-            yield return new WaitForSecondsRealtime(noteTime);
+            yield return new WaitForSecondsRealtime(KeyListener.AllowedTime);
+            StartCoroutine(Follow(obj, note.note, noteTime - KeyListener.AllowedTime));
+            yield return new WaitForSecondsRealtime(noteTime - KeyListener.AllowedTime);
             Destroy(obj);
         }
     }

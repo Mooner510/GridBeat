@@ -27,25 +27,43 @@
       "difficulty": 4
     },
     {
-      "name": "Happiness",
-      "artist": "Mooner510",
-      "bpm": 142.5,
-      "minute": 2,
-      "second": 26
+      "name": "설날",
+      "artist": "윤극영",
+      "arrange": "Mooner510",
+      "minute": 0,
+      "second": 46,
+      "difficulty": 4
     },
     {
-      "name": "La La Rasputin",
-      "artist": "Boney M.",
-      "minute": 3,
-      "second": 58,
-      "difficulty": 10
+      "name": "Happy Birthday To You",
+      "artist": "Patty Hill",
+      "arrange": "Mooner510",
+      "minute": 2,
+      "second": 20,
+      "gameMode": 1,
+      "difficulty": 7
+    },
+    {
+      "name": "Up In My Jam",
+      "artist": "Kubbi",
+      "minute": 2,
+      "second": 31,
+      "gameMode": 1,
+      "difficulty": 8
     },
     {
       "name": "Unity",
       "artist": "TheFatRat",
       "minute": 2,
       "second": 0,
-      "difficulty": 6
+      "difficulty": 9
+    },
+    {
+      "name": "Happiness",
+      "artist": "Mooner510",
+      "bpm": 142.5,
+      "minute": 2,
+      "second": 26
     },
     {
       "name": "Fade",
@@ -58,31 +76,6 @@
       "artist": "Elektronomia",
       "minute": 1,
       "second": 33
-    },
-    {
-      "name": "설날",
-      "artist": "윤극영",
-      "arrange": "Mooner510",
-      "minute": 0,
-      "second": 46,
-      "difficulty": 6
-    },
-    {
-      "name": "Up In My Jam",
-      "artist": "Kubbi",
-      "minute": 2,
-      "second": 31,
-      "gameMode": 1,
-      "difficulty": 8
-    },
-    {
-      "name": "Happy Birthday To You",
-      "artist": "Patty Hill",
-      "arrange": "Mooner510",
-      "minute": 2,
-      "second": 20,
-      "gameMode": 1,
-      "difficulty": 7
     }
   ]
 }

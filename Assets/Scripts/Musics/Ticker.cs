@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using Listener;
 using Musics.Data;
 using UnityEngine;
 
@@ -22,6 +22,8 @@ namespace Musics {
         public float GetStartTime() => _writeTime;
 
         public float GetPlayTime() => Time.realtimeSinceStartup - _writeTime;
+
+        public void ResetWrite() => _writeTime = Time.realtimeSinceStartup;
 
         public void Write() {
             Debug.Log("Write Start");
@@ -69,8 +71,8 @@ namespace Musics {
             var i = 0;
             do {
                 var note = NoteManager.Pick(i);
-                if (note.time <= now + 0.5f) {
-                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), note.time - (now + 0.5f)));
+                if (note.time <= now + KeyListener.NoteTime) {
+                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), note.time - (now + KeyListener.NoteTime)));
                 } else break;
             } while (!NoteManager.IsTop(++i));
         }

@@ -23,6 +23,7 @@ namespace Score {
 
         public void Start() {
             _score = 0d;
+            _combo = 0;
             _total = 0;
             _data = new int[5];
             comboText.text = "";

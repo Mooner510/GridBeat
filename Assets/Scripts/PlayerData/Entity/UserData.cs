@@ -17,6 +17,9 @@ namespace PlayerData.Entity {
         public KeyCode[] quadKey = {
             KeyCode.F, KeyCode.J, KeyCode.R, KeyCode.I
         };
+        public KeyCode[] quadKey2 = {
+            KeyCode.Keypad5, KeyCode.Keypad6, KeyCode.Keypad7, KeyCode.KeypadMinus
+        };
     }
 
     [Serializable]

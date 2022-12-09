@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using DG.Tweening;
 using Listener;
 using Map;
 using Musics.Data;
@@ -44,6 +45,7 @@ namespace Musics {
 
         private IEnumerator Init() {
             var color = hider.color;
+            Ticker.Instance.ResetWrite();
             for (var i = 0f; i <= 3; i += Time.deltaTime) {
                 color.a = 1 - i / 3;
                 hider.color = color;
@@ -57,22 +59,28 @@ namespace Musics {
             StartCoroutine(End(true));
         }
 
+        protected static IEnumerator Follow(GameObject obj, int note, float time) {
+            for (var i = 0f; i < time; i += Time.deltaTime) {
+                if(obj == null) yield break;
+                obj.transform.position = MapMaker.Instance.GetNote(note).transform.position;
+                yield return null;
+            }
+        }
+
         public virtual IEnumerator Accept(LiveNoteData note, float time) {
-            var colored = false;
             if(time > 0) yield return new WaitForSecondsRealtime(time);
-            KeyListener.Instance.Queue(note);
             var obj = Instantiate(beatInspector, GameUtils.Locator(GameMode.Keypad, note.note), Quaternion.identity);
             var spriteRenderer = obj.GetComponent<SpriteRenderer>();
-            var noteTime = KeyListener.NoteTime / 2;
-            var fullNoteTime = KeyListener.NoteTime / 2 + KeyListener.AllowedTime;
-            for (var delta = 0f; delta <= fullNoteTime; delta += Time.deltaTime) {
-                yield return null;
-                obj.transform.position = MapMaker.Instance.GetNote(note.note).transform.position;
-                obj.transform.localScale = new Vector3(delta * 4, delta * 4, delta * 4);
-                if (colored || !(delta >= noteTime)) continue;
-                spriteRenderer.color = ClickColor;
-                colored = true;
-            }
+            
+            StartCoroutine(Follow(obj, note.note, KeyListener.NoteTime + KeyListener.AllowedTime * 2));
+            
+            KeyListener.Instance.Queue(note);
+            obj.transform.DOScale(Vector3.one * 2f, KeyListener.NoteTime).SetEase(Ease.Linear);
+            yield return new WaitForSecondsRealtime(KeyListener.NoteTime);
+            spriteRenderer.color = ClickColor;
+            yield return new WaitForSecondsRealtime(KeyListener.AllowedTime);
+            obj.transform.DOScale(Vector3.one * 2.35f, KeyListener.AllowedTime).SetEase(Ease.Linear);
+            yield return new WaitForSecondsRealtime(KeyListener.AllowedTime);
             Destroy(obj);
         }
     }
