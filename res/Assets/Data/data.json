@@ -1,0 +1,67 @@
+﻿{
+  "musics": [
+    {
+      "name": "Yoru ni Kakeru",
+      "artist": "YOASOBI",
+      "arrange": "Mooner510",
+      "bpm": 127.5,
+      "minute": 2,
+      "second": 29,
+      "gameMode": 0,
+      "difficulty": 2
+    },
+    {
+      "name": "Kaibutsu",
+      "artist": "YOASOBI",
+      "arrange": "Mooner510",
+      "bpm": 169.95,
+      "minute": 2,
+      "second": 54,
+      "gameMode": 0,
+      "difficulty": 0
+    },
+    {
+      "name": "Soft Icecream",
+      "artist": "Mooner510",
+      "bpm": 142.5,
+      "minute": 1,
+      "second": 25,
+      "gameMode": 0,
+      "difficulty": 4
+    },
+    {
+      "name": "Unity",
+      "artist": "TheFatRat",
+      "minute": 2,
+      "second": 0,
+      "gameMode": 1,
+      "difficulty": 10
+    },
+    {
+      "name": "설날",
+      "artist": "윤극영",
+      "arrange": "Mooner510",
+      "minute": 0,
+      "second": 46,
+      "gameMode": 1,
+      "difficulty": 10
+    },
+    {
+      "name": "Up In My Jam",
+      "artist": "Kubbi",
+      "minute": 2,
+      "second": 31,
+      "gameMode": 1,
+      "difficulty": 10
+    },
+    {
+      "name": "Happy Birthday To You",
+      "artist": "Patty Hill",
+      "arrange": "Mooner510",
+      "minute": 2,
+      "second": 20,
+      "gameMode": 1,
+      "difficulty": 10
+    }
+  ]
+}

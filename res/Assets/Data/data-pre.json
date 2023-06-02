@@ -1,0 +1,77 @@
+﻿{
+  "musics": [
+    {
+      "name": "Yoru ni Kakeru",
+      "artist": "YOASOBI",
+      "arrange": "Mooner510",
+      "bpm": 127.5,
+      "minute": 2,
+      "second": 29,
+      "gameMode": 0
+    },
+    {
+      "name": "Kaibutsu",
+      "artist": "YOASOBI",
+      "arrange": "Mooner510",
+      "bpm": 169.95,
+      "minute": 2,
+      "second": 54,
+      "gameMode": 0
+    },
+    {
+      "name": "Soft Icecream",
+      "artist": "Mooner510",
+      "bpm": 142.5,
+      "minute": 1,
+      "second": 25,
+      "gameMode": 0
+    },
+    {
+      "name": "WTF",
+      "artist": "HUGEL",
+      "minute": 2,
+      "second": 42,
+      "gameMode": 0
+    },
+    {
+      "name": "La La Rasputin",
+      "artist": "Boney M.",
+      "minute": 3,
+      "second": 58,
+      "gameMode": 1,
+      "level": 12
+    },
+    {
+      "name": "Happiness",
+      "artist": "Mooner510",
+      "minute": 2,
+      "second": 26,
+      "gameMode": 1,
+      "difficulty": 10
+    },
+    {
+      "name": "Happy Mandolin",
+      "artist": "Media Right Productions",
+      "minute": 3,
+      "second": 58,
+      "gameMode": 1,
+      "difficulty": 10
+    },
+    {
+      "name": "Sky High",
+      "artist": "Elektronomia",
+      "minute": 3,
+      "second": 58,
+      "gameMode": 1,
+      "difficulty": 10
+    },
+    {
+      "name": "Fade",
+      "artist": "Alan Walker",
+      "minute": 2,
+      "second": 1,
+      "gameMode": 1,
+      "difficulty": 10
+    }
+  ]
+}
