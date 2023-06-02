@@ -83,7 +83,7 @@ namespace UI {
             var totalCount = noteData?.Length ?? 0;
             var currentScore = (float) Counter.GetScore();
             var final = (perfectCount + greatCount * 0.75f + goodCount * 0.35f + badCount * 0.1f) * 100 / totalCount;
-            var finalIndex = 9 - NumberUtils.Between((int) (Math.Round(final) / 10), 9, 0);
+            var finalIndex = 9 - ((int) (Math.Round(final) / 10)).Between(9, 0);
             var increases = perfectCount * 100f / totalCount;
             var values = new float[8];
             

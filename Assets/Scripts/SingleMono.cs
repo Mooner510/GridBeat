@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils;
 
 public class SingleMono<T> : MonoBehaviour where T : MonoBehaviour {
     private static T _init;
@@ -16,7 +17,7 @@ public class SingleMono<T> : MonoBehaviour where T : MonoBehaviour {
                 if (_init is not null) return _init;
                 var objectName = typeof(T).ToString();
                 var gameObject = GameObject.Find(objectName);
-                if (gameObject is null) gameObject = new GameObject(objectName);
+                if (gameObject.IsDestroyed()) gameObject = new GameObject(objectName);
                 _init = gameObject.AddComponent<T>();
                 return _init;
             }
@@ -24,7 +25,7 @@ public class SingleMono<T> : MonoBehaviour where T : MonoBehaviour {
     }
 
     // protected void Awake() {
-    //     if (_init is null) _init = this as T;
+    //     if (_init == null) _init = this as T;
     //     else if (_init != this) Destroy(gameObject);
     //     DontDestroyOnLoad(gameObject);
     // }

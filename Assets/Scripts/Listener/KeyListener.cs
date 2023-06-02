@@ -23,8 +23,8 @@ namespace Listener {
 
         private KeyCode _code;
 
-        protected Queue<LiveNoteData>[] NoteQueue;
-        protected KeyCode[] KeyCodes;
+        protected Queue<LiveNoteData>[] noteQueue;
+        protected KeyCode[] keyCodes;
 
         private void Start() {
             SetUp();
@@ -44,10 +44,10 @@ namespace Listener {
         }
 
         protected virtual void SetUp() {
-            KeyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.keypadKey;
-            Debug.Log(KeyCodes);
-            NoteQueue = new Queue<LiveNoteData>[9];
-            for (var i = 0; i < 9; i++) NoteQueue[i] = new Queue<LiveNoteData>();
+            keyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.keypadKey;
+            Debug.Log(keyCodes);
+            noteQueue = new Queue<LiveNoteData>[9];
+            for (var i = 0; i < 9; i++) noteQueue[i] = new Queue<LiveNoteData>();
         }
 
         public void Update() {
@@ -68,8 +68,9 @@ namespace Listener {
             //     return;
             // }
 
-            for (var i = 0; i < KeyCodes.Length; i++) {
-                _code = KeyCodes[i];
+            // if (MusicManager.GetCurrentGameMode() == GameMode.Keypad) {
+            for (var i = 0; i < keyCodes.Length; i++) {
+                _code = keyCodes[i];
                 if (!Input.GetKeyDown(_code)) continue;
                 Debug.Log($"id: {i}");
                 MapMaker.Instance.Click(i);
@@ -78,71 +79,45 @@ namespace Listener {
                     NoteManager.AddNote(i);
                 } else {
                     LiveNoteData liveNoteData = null;
-                    while (NoteQueue[i].Count > 0 && liveNoteData is null) {
-                        liveNoteData = NoteQueue[i].Dequeue();
+                    while (noteQueue[i].Count > 0 && liveNoteData == null) {
+                        liveNoteData = noteQueue[i].Dequeue();
                         if (liveNoteData.clicked) liveNoteData = null;
                     }
 
-                    if (liveNoteData is null) return;
+                    if (liveNoteData == null) return;
                     var ticker = Ticker.Instance;
                     liveNoteData.Click();
                     var diff = Math.Abs(liveNoteData.time - ticker.GetPlayTime());
                     Debug.Log($"{liveNoteData.time}: {diff}s");
-                    switch (diff) {
-                        case <= 0.09f:
-                            Spawn(liveNoteData, ScoreType.Perfect);
-                            break;
-                        case <= 0.13f:
-                            Spawn(liveNoteData, ScoreType.Great);
-                            break;
-                        case <= 0.2f:
-                            Spawn(liveNoteData, ScoreType.Good);
-                            break;
-                        case <= 0.3f:
-                            Spawn(liveNoteData, ScoreType.Bad);
-                            break;
-                        default:
-                            Spawn(liveNoteData, ScoreType.Miss);
-                            break;
-                    }
+                    Spawn(liveNoteData, NoteManager.GetPerfect(diff));
                 }
             }
-
-            if (MusicManager.GetCurrentGameMode() != GameMode.Quad) return;
-            var quadKey2 = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey2;
-            for (var i = 0; i < quadKey2.Length; i++) {
-                _code = quadKey2[i];
-                if (!Input.GetKeyDown(_code)) continue;
-                Debug.Log($"id: {i}");
-                MapMaker.Instance.Click(i);
-                Ticker.Instance.Beat();
-                if (!MusicManager.Instance.IsPlayMode()) {
-                    NoteManager.AddNote(i);
-                } else {
-                    LiveNoteData liveNoteData = null;
-                    while (NoteQueue[i].Count > 0 && liveNoteData is null) {
-                        liveNoteData = NoteQueue[i].Dequeue();
-                        if (liveNoteData.clicked) liveNoteData = null;
-                    }
-
-                    if (liveNoteData is null) return;
-                    var ticker = Ticker.Instance;
-                    liveNoteData.Click();
-                    var diff = Math.Abs(liveNoteData.time - ticker.GetPlayTime());
-                    Debug.Log($"{liveNoteData.time}: {diff}s");
-                    if (diff <= 0.09f) {
-                        Spawn(liveNoteData, ScoreType.Perfect);
-                    } else if (diff <= 0.13f) {
-                        Spawn(liveNoteData, ScoreType.Great);
-                    } else if (diff <= 0.2f) {
-                        Spawn(liveNoteData, ScoreType.Good);
-                    } else if (diff <= 0.3f) {
-                        Spawn(liveNoteData, ScoreType.Bad);
-                    } else {
-                        Spawn(liveNoteData, ScoreType.Miss);
-                    }
-                }
-            }
+            // } else {
+            //     var quadKey2 = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey2;
+            //     for (var i = 0; i < quadKey2.Length; i++) {
+            //         _code = quadKey2[i];
+            //         if (!Input.GetKeyDown(_code)) continue;
+            //         Debug.Log($"id: {i}");
+            //         MapMaker.Instance.Click(i);
+            //         Ticker.Instance.Beat();
+            //         if (!MusicManager.Instance.IsPlayMode()) {
+            //             NoteManager.AddNote(i);
+            //         } else {
+            //             LiveNoteData liveNoteData = null;
+            //             while (noteQueue[i].Count > 0 && liveNoteData == null) {
+            //                 liveNoteData = noteQueue[i].Dequeue();
+            //                 if (liveNoteData.clicked) liveNoteData = null;
+            //             }
+            //
+            //             if (liveNoteData == null) return;
+            //             var ticker = Ticker.Instance;
+            //             liveNoteData.Click();
+            //             var diff = Math.Abs(liveNoteData.time - ticker.GetPlayTime());
+            //             Debug.Log($"{liveNoteData.time}: {diff}s");
+            //             Spawn(liveNoteData, NoteManager.GetPerfect(diff));
+            //         }
+            //     }
+            // }
         }
 
         protected void Spawn(LiveNoteData data, ScoreType score) {
@@ -156,37 +131,20 @@ namespace Listener {
 
         public void Queue(LiveNoteData data) => StartCoroutine(Enqueue(data));
 
-        public static float NoteTime {
-            get {
-                var noteSpeed = NoteManager.GetNoteSpeed();
-                if (MusicManager.GetCurrentGameMode() == GameMode.Keypad) {
-                    return noteSpeed switch {
-                        < 8 => 1 + (8 - noteSpeed) * 0.585f,
-                        > 8 => 1 - (noteSpeed - 8) * 0.0725f,
-                        _ => 1f
-                    };
-                }
-
-                return noteSpeed switch {
-                    < 8 => 2 + (8 - noteSpeed) * 0.95f,
-                    > 8 => 2 - (noteSpeed - 8) * 0.18f,
-                    _ => 2f
-                };
-            }
-        }
-        public static float AllowedTime => Math.Min(NoteTime / 10, 0.3f) * (MusicManager.GetCurrentGameMode() == GameMode.Keypad ? 2 : 1);
+        public static float NoteTime => NoteManager.GetNoteTime();
+        public static float AllowedTime => NoteManager.GetNoteAllowedTime();
 
         protected virtual IEnumerator Enqueue(LiveNoteData data) {
             // while (NoteQueue[data.note].Count > 1) {
             //     NoteQueue[data.note].Dequeue().Click();
             //     Spawn(data, ScoreType.Miss);
             // }
-            NoteQueue[data.note].Enqueue(data);
-            yield return new WaitForSecondsRealtime(NoteTime + AllowedTime);
-            if (data.clicked) yield break;
+            noteQueue[data.note].Enqueue(data);
+            yield return new WaitForSecondsRealtime(AllowedTime * 2);
+            if (data.clicked || (noteQueue[data.note].Count != 0 && noteQueue[data.note].Peek().clicked)) yield break;
             data.Click();
             Spawn(data, ScoreType.Miss);
-            NoteQueue[data.note].Dequeue();
+            noteQueue[data.note].Dequeue();
         }
     }
 }

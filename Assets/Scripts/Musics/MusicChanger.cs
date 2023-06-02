@@ -152,7 +152,7 @@ namespace Musics {
             backgroundImage.sprite = musicData.blurImage;
 
             artist.text = musicData.artist;
-            if (musicData.arrange is null) {
+            if (musicData.arrange == null) {
                 arranger.enabled = false;
                 arrangeInfo.enabled = false;
             } else {
@@ -174,7 +174,7 @@ namespace Musics {
 
         private void UpdateSuggestion(MusicData musicData) {
             var noteData = musicData.GetNoteData(MusicManager.GetCurrentGameMode());
-            if (noteData is null || noteData.Length <= 0) {
+            if (noteData == null || noteData.Length <= 0) {
                 suggestion1.text = "Press E to Record";
                 suggestion2.text = "This music doesn't have note map!";
                 _canStart = false;

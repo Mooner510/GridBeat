@@ -9,7 +9,7 @@ namespace Musics {
             do {
                 var note = NoteManager.Pick(i);
                 if (note.time <= now + KeyListener.NoteTime) {
-                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), note.time - (now + KeyListener.NoteTime)));
+                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop()));
                 } else break;
             } while (!NoteManager.IsTop(++i));
         }

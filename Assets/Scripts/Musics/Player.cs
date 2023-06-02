@@ -59,25 +59,25 @@ namespace Musics {
             StartCoroutine(End(true));
         }
 
-        protected static IEnumerator Follow(GameObject obj, int note, float time) {
-            for (var i = 0f; i < time; i += Time.deltaTime) {
-                if(obj is null) yield break;
+        protected static IEnumerator Follow(GameObject obj, int note) {
+            while (true) {
+                if(obj.IsDestroyed()) break;
                 obj.transform.position = MapMaker.Instance.GetNote(note).transform.position;
                 yield return null;
             }
         }
 
-        public virtual IEnumerator Accept(LiveNoteData note, float time) {
-            // 아에 안 멈출거 같은데?
-            if(time > 0) yield return new WaitForSecondsRealtime(time);
+        public virtual IEnumerator Accept(LiveNoteData note) {
+            // // 아에 안 멈출거 같은데?
+            // if(time > 0) yield return new WaitForSecondsRealtime(time);
             var obj = Instantiate(beatInspector, GameUtils.Locator(GameMode.Keypad, note.note), Quaternion.identity);
             var spriteRenderer = obj.GetComponent<SpriteRenderer>();
             
-            StartCoroutine(Follow(obj, note.note, KeyListener.NoteTime + KeyListener.AllowedTime * 2));
+            StartCoroutine(Follow(obj, note.note));
             
-            KeyListener.Instance.Queue(note);
             obj.transform.DOScale(Vector3.one * 2f, KeyListener.NoteTime).SetEase(Ease.Linear);
-            yield return new WaitForSecondsRealtime(KeyListener.NoteTime);
+            yield return new WaitForSecondsRealtime(KeyListener.NoteTime - KeyListener.AllowedTime);
+            KeyListener.Instance.Queue(note);
             spriteRenderer.color = ClickColor;
             yield return new WaitForSecondsRealtime(KeyListener.AllowedTime);
             obj.transform.DOScale(Vector3.one * 2.35f, KeyListener.AllowedTime).SetEase(Ease.Linear);

@@ -7,23 +7,23 @@ using UnityEngine;
 namespace Listener {
     public class QuadKeyListener : KeyListener {
         protected override void SetUp() {
-            KeyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey;
-            Debug.Log(KeyCodes);
-            NoteQueue = new Queue<LiveNoteData>[4];
-            for (var i = 0; i < 4; i++) NoteQueue[i] = new Queue<LiveNoteData>();
+            keyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey;
+            Debug.Log(keyCodes);
+            noteQueue = new Queue<LiveNoteData>[4];
+            for (var i = 0; i < 4; i++) noteQueue[i] = new Queue<LiveNoteData>();
         }
         
         protected override IEnumerator Enqueue(LiveNoteData data) {
-            while (NoteQueue[data.note].Count > 1) {
-                NoteQueue[data.note].Dequeue().Click();
-                Spawn(data, ScoreType.Miss);
-            }
-            NoteQueue[data.note].Enqueue(data);
-            yield return new WaitForSecondsRealtime(NoteTime - AllowedTime * 2);
-            if (data.clicked) yield break;
+            // while (NoteQueue[data.note].Count > 1) {
+            //     NoteQueue[data.note].Dequeue().Click();
+            //     Spawn(data, ScoreType.Miss);
+            // }
+            noteQueue[data.note].Enqueue(data);
+            yield return new WaitForSecondsRealtime(AllowedTime * 2);
+            if (data.clicked || (noteQueue[data.note].Count != 0 && noteQueue[data.note].Peek().clicked)) yield break;
             data.Click();
             Spawn(data, ScoreType.Miss);
-            NoteQueue[data.note].Dequeue();
+            noteQueue[data.note].Dequeue();
         }
     }
 }

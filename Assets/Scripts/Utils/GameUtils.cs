@@ -12,7 +12,7 @@ namespace Utils {
 
         private static RectTransform _canvas;
 
-        public static RectTransform Canvas => _canvas is null ? _canvas = GameObject.Find("Canvas").GetComponent<RectTransform>() : _canvas;
+        public static RectTransform Canvas => _canvas ? _canvas : _canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
 
         public static Vector2 LocationToCanvas(Vector2 vector) {
             if (Camera.main is null) return new Vector2();
@@ -21,6 +21,8 @@ namespace Utils {
             return new Vector2(viewPosition.x * delta.x - delta.x / 2, viewPosition.y * delta.y - delta.y / 2);
         }
     
-        public static Vector2 TransferCanvasLocation(Vector2 vector) => new Vector2(vector.x + 366, vector.y + 305.8f);
+        public static Vector2 TransferCanvasLocation(Vector2 vector) => new(vector.x + 366, vector.y + 305.8f);
+        
+        public static bool IsDestroyed(this GameObject gameObject) => !ReferenceEquals(gameObject, null);
     }
 }

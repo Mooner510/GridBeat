@@ -37,7 +37,7 @@ namespace Musics {
             Debug.Log("Write Stop");
             if(!_readTick) return;
             _readTick = false;
-            // if (_routine is null) return;
+            // if (_routine == null) return;
             // StopCoroutine(_routine);
             musicSound.Stop();
         }
@@ -46,7 +46,7 @@ namespace Musics {
             Debug.Log("Write Stop");
             if(!_readTick) return;
             _readTick = false;
-            // if (_routine is null) return;
+            // if (_routine == null) return;
             // StopCoroutine(_routine);
             StartCoroutine(StopMusic());
         }
@@ -72,7 +72,7 @@ namespace Musics {
             do {
                 var note = NoteManager.Pick(i);
                 if (note.time <= now + KeyListener.NoteTime) {
-                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), note.time - (now + KeyListener.NoteTime)));
+                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop()));
                 } else break;
             } while (!NoteManager.IsTop(++i));
         }
@@ -88,7 +88,7 @@ namespace Musics {
                     var note = NoteManager.Pick(i);
                     if (note.time <= now + 1) {
                         // Debug.Log($"Tick: {note.time}");
-                        StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), note.time - (now + 1)));
+                        StartCoroutine(Player.Instance.Accept(NoteManager.Pop()));
                     }
                 } while (!NoteManager.IsTop(++i));
             }
