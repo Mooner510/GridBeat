@@ -14,7 +14,7 @@ namespace Musics {
         [SerializeField] private SpriteRenderer hider;
         [SerializeField] private Text recording;
 
-        private static readonly Color ClickColor = new Color(0f, 0.8f, 0.8f, 0.3f);
+        private static readonly Color ClickColor = new(0f, 0.8f, 0.8f, 0.3f);
 
         private void Start() {
             if (MusicManager.Instance.IsPlayMode()) {
@@ -61,13 +61,14 @@ namespace Musics {
 
         protected static IEnumerator Follow(GameObject obj, int note, float time) {
             for (var i = 0f; i < time; i += Time.deltaTime) {
-                if(obj == null) yield break;
+                if(obj is null) yield break;
                 obj.transform.position = MapMaker.Instance.GetNote(note).transform.position;
                 yield return null;
             }
         }
 
         public virtual IEnumerator Accept(LiveNoteData note, float time) {
+            // 아에 안 멈출거 같은데?
             if(time > 0) yield return new WaitForSecondsRealtime(time);
             var obj = Instantiate(beatInspector, GameUtils.Locator(GameMode.Keypad, note.note), Quaternion.identity);
             var spriteRenderer = obj.GetComponent<SpriteRenderer>();

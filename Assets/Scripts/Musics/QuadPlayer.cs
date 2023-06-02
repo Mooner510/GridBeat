@@ -8,7 +8,7 @@ using Utils;
 namespace Musics {
     public class QuadPlayer : Player {
 
-        private static readonly Color ClickColor = new Color(0f, 0.8f, 0.8f, 0.5f);
+        private static readonly Color ClickColor = new(0f, 0.8f, 0.8f, 0.5f);
         
         public override IEnumerator Accept(LiveNoteData note, float time) {
             yield return new WaitForSecondsRealtime(time);

@@ -18,8 +18,8 @@ namespace Listener {
         [SerializeField] protected Text increases;
         
         private Sequence _scoreSequence;
-        private static readonly Vector3 BeforeScorePos = new Vector3(335f, 144f);
-        private static readonly Vector3 ScorePos = new Vector3(346.5f, 144f);
+        private static readonly Vector3 BeforeScorePos = new(335f, 144f);
+        private static readonly Vector3 ScorePos = new(346.5f, 144f);
 
         private KeyCode _code;
 
@@ -78,26 +78,32 @@ namespace Listener {
                     NoteManager.AddNote(i);
                 } else {
                     LiveNoteData liveNoteData = null;
-                    while (NoteQueue[i].Count > 0 && liveNoteData == null) {
+                    while (NoteQueue[i].Count > 0 && liveNoteData is null) {
                         liveNoteData = NoteQueue[i].Dequeue();
                         if (liveNoteData.clicked) liveNoteData = null;
                     }
 
-                    if (liveNoteData == null) return;
+                    if (liveNoteData is null) return;
                     var ticker = Ticker.Instance;
                     liveNoteData.Click();
                     var diff = Math.Abs(liveNoteData.time - ticker.GetPlayTime());
                     Debug.Log($"{liveNoteData.time}: {diff}s");
-                    if (diff <= 0.09f) {
-                        Spawn(liveNoteData, ScoreType.Perfect);
-                    } else if (diff <= 0.13f) {
-                        Spawn(liveNoteData, ScoreType.Great);
-                    } else if (diff <= 0.2f) {
-                        Spawn(liveNoteData, ScoreType.Good);
-                    } else if (diff <= 0.3f) {
-                        Spawn(liveNoteData, ScoreType.Bad);
-                    } else {
-                        Spawn(liveNoteData, ScoreType.Miss);
+                    switch (diff) {
+                        case <= 0.09f:
+                            Spawn(liveNoteData, ScoreType.Perfect);
+                            break;
+                        case <= 0.13f:
+                            Spawn(liveNoteData, ScoreType.Great);
+                            break;
+                        case <= 0.2f:
+                            Spawn(liveNoteData, ScoreType.Good);
+                            break;
+                        case <= 0.3f:
+                            Spawn(liveNoteData, ScoreType.Bad);
+                            break;
+                        default:
+                            Spawn(liveNoteData, ScoreType.Miss);
+                            break;
                     }
                 }
             }
@@ -114,12 +120,12 @@ namespace Listener {
                     NoteManager.AddNote(i);
                 } else {
                     LiveNoteData liveNoteData = null;
-                    while (NoteQueue[i].Count > 0 && liveNoteData == null) {
+                    while (NoteQueue[i].Count > 0 && liveNoteData is null) {
                         liveNoteData = NoteQueue[i].Dequeue();
                         if (liveNoteData.clicked) liveNoteData = null;
                     }
 
-                    if (liveNoteData == null) return;
+                    if (liveNoteData is null) return;
                     var ticker = Ticker.Instance;
                     liveNoteData.Click();
                     var diff = Math.Abs(liveNoteData.time - ticker.GetPlayTime());
@@ -154,13 +160,18 @@ namespace Listener {
             get {
                 var noteSpeed = NoteManager.GetNoteSpeed();
                 if (MusicManager.GetCurrentGameMode() == GameMode.Keypad) {
-                    if (noteSpeed < 8) return 1 + (8 - noteSpeed) * 0.585f;
-                    if (noteSpeed > 8) return 1 - (noteSpeed - 8) * 0.0725f;
-                    return 1f;
+                    return noteSpeed switch {
+                        < 8 => 1 + (8 - noteSpeed) * 0.585f,
+                        > 8 => 1 - (noteSpeed - 8) * 0.0725f,
+                        _ => 1f
+                    };
                 }
-                if (noteSpeed < 8) return 2 + (8 - noteSpeed) * 0.95f;
-                if (noteSpeed > 8) return 2 - (noteSpeed - 8) * 0.18f;
-                return 2f;
+
+                return noteSpeed switch {
+                    < 8 => 2 + (8 - noteSpeed) * 0.95f,
+                    > 8 => 2 - (noteSpeed - 8) * 0.18f,
+                    _ => 2f
+                };
             }
         }
         public static float AllowedTime => Math.Min(NoteTime / 10, 0.3f) * (MusicManager.GetCurrentGameMode() == GameMode.Keypad ? 2 : 1);

@@ -37,7 +37,7 @@ namespace Musics {
             Debug.Log("Write Stop");
             if(!_readTick) return;
             _readTick = false;
-            // if (_routine == null) return;
+            // if (_routine is null) return;
             // StopCoroutine(_routine);
             musicSound.Stop();
         }
@@ -46,7 +46,7 @@ namespace Musics {
             Debug.Log("Write Stop");
             if(!_readTick) return;
             _readTick = false;
-            // if (_routine == null) return;
+            // if (_routine is null) return;
             // StopCoroutine(_routine);
             StartCoroutine(StopMusic());
         }

@@ -41,12 +41,12 @@ namespace Musics {
 
         #region Location
 
-        private static readonly Vector3 ImageLocation = new Vector3(0, 45);
-        private static readonly Vector3 LeftImageLocation = new Vector3(-650, 45);
-        private static readonly Vector3 RightImageLocation = new Vector3(650, 45);
-        private static readonly Vector3 TitleLocation = new Vector3(0, -100);
-        private static readonly Vector3 LeftTitleLocation = new Vector3(-650, -100);
-        private static readonly Vector3 RightTitleLocation = new Vector3(650, -100);
+        private static readonly Vector3 ImageLocation = new(0, 45);
+        private static readonly Vector3 LeftImageLocation = new(-650, 45);
+        private static readonly Vector3 RightImageLocation = new(650, 45);
+        private static readonly Vector3 TitleLocation = new(0, -100);
+        private static readonly Vector3 LeftTitleLocation = new(-650, -100);
+        private static readonly Vector3 RightTitleLocation = new(650, -100);
 
         private const float UIOut = -630f;
         private const float TextOut = UIOut + 138.76f;
@@ -77,10 +77,10 @@ namespace Musics {
             hider.color = Color.clear;
             audioPlayer.volume = 1;
             _canStart = false;
-            
+
             speedText.text = $"{NoteManager.GetNoteSpeed():F1}";
             speedText.color = SpeedColors[(int) NoteManager.GetNoteSpeed() / 2];
-            
+
             _clickSequence = DOTween.Sequence()
                 .SetAutoKill(false)
                 .OnStart(() => suggestion2.transform.localScale = Vector3.one * 1.2f)
@@ -115,16 +115,12 @@ namespace Musics {
             var musicData = MusicManager.Instance.GetCurrentMusicData();
 
             _subImage = Instantiate(image, ImageLocation, Quaternion.identity);
-            if (_subImage.transform != null) {
-                _subImage.transform.SetParent(GameUtils.Canvas, false);
-                _subImage.sprite = musicData.image;
-            }
+            _subImage.transform.SetParent(GameUtils.Canvas, false);
+            _subImage.sprite = musicData.image;
 
             _subTitle = Instantiate(title, TitleLocation, Quaternion.identity);
-            if (_subTitle != null) {
-                _subTitle.transform.SetParent(GameUtils.Canvas, false);
-                _subTitle.text = musicData.name;
-            }
+            _subTitle.transform.SetParent(GameUtils.Canvas, false);
+            _subTitle.text = musicData.name;
 
             var gameMode = MusicManager.GetCurrentGameMode();
             keypadImage.enabled = gameMode == GameMode.Keypad;
@@ -137,26 +133,26 @@ namespace Musics {
 
         private void TextUpdate([CanBeNull] Image newImage, [CanBeNull] Text newTitle,
             [CanBeNull] Component currentImage, [CanBeNull] Component currentTitle, bool isLeft, MusicData musicData) {
-            if (newImage != null) {
+            if (newImage is not null) {
                 newImage.sprite = musicData.image;
                 newImage.transform.DOLocalMove(ImageLocation, 1f).SetEase(Ease.OutCubic);
             }
 
-            if (newTitle != null) {
+            if (newTitle is not null) {
                 newTitle.text = musicData.name;
                 newTitle.transform.DOLocalMove(TitleLocation, 1f).SetEase(Ease.OutCubic);
             }
 
-            if (currentImage != null)
+            if (currentImage is not null)
                 currentImage.transform.DOLocalMove(isLeft ? RightImageLocation : LeftImageLocation, 1f)
                     .SetEase(Ease.OutCubic);
-            if (currentTitle != null)
+            if (currentTitle is not null)
                 currentTitle.transform.DOLocalMove(isLeft ? RightTitleLocation : LeftTitleLocation, 1f)
                     .SetEase(Ease.OutCubic);
             backgroundImage.sprite = musicData.blurImage;
 
             artist.text = musicData.artist;
-            if (musicData.arrange == null) {
+            if (musicData.arrange is null) {
                 arranger.enabled = false;
                 arrangeInfo.enabled = false;
             } else {
@@ -178,7 +174,7 @@ namespace Musics {
 
         private void UpdateSuggestion(MusicData musicData) {
             var noteData = musicData.GetNoteData(MusicManager.GetCurrentGameMode());
-            if (noteData == null || noteData.Length <= 0) {
+            if (noteData is null || noteData.Length <= 0) {
                 suggestion1.text = "Press E to Record";
                 suggestion2.text = "This music doesn't have note map!";
                 _canStart = false;
@@ -255,7 +251,7 @@ namespace Musics {
             speedText.transform.DOLocalMoveX(SpeedOut, 2).SetEase(Ease.OutCubic);
             shiftText.transform.DOLocalMoveX(SpeedOut, 2).SetEase(Ease.OutCubic);
             speedInfoText.transform.DOLocalMoveX(SpeedOut, 2).SetEase(Ease.OutCubic);
-            
+
             keypadImage.transform.DOLocalMoveX(SelectorOut, 2).SetEase(Ease.OutCubic);
             quadImage.transform.DOLocalMoveX(SelectorOut, 2).SetEase(Ease.OutCubic);
             audioPlayer.DOFade(0, 3);
@@ -278,6 +274,7 @@ namespace Musics {
         private static readonly Color Shift = new Color(0.7128526f, 1f, 0.4198113f);
         private static readonly Color SuperColor = new Color(1f, 0.4271304f, 0.3820755f);
         private static readonly Color DefaultColor = new Color(0.6980392f, 0.6980392f, 0.6980392f);
+
         private static readonly Color[] SpeedColors = {
             new Color(0.2044074f, 1f, 0.272549f),
             new Color(1f, 1f, 0.36f),
@@ -297,13 +294,14 @@ namespace Musics {
                 speedUp.color = speedDown.color = SuperColor;
                 shiftText.color = Shift;
             }
+
             if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift)) {
                 speedUp.text = "X +";
                 speedDown.text = "- Z";
                 speedUp.color = speedDown.color = DefaultColor;
                 shiftText.color = Unshift;
             }
-            
+
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
                 StopCoroutine(MoveLeft());
                 StartCoroutine(MoveLeft());

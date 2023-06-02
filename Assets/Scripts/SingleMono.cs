@@ -7,16 +7,16 @@ public class SingleMono<T> : MonoBehaviour where T : MonoBehaviour {
     public static T Instance {
         get {
             lock (Sync) {
-                if (_init != null) return _init;
+                if (_init is not null) return _init;
                 var objects = FindObjectsOfType<T>();
                 if (objects.Length > 0) _init = objects[0];
                 else if (objects.Length > 1)
                     Debug.LogError("There is more than one " + typeof(T).Name + " in the scene.");
 
-                if (_init != null) return _init;
+                if (_init is not null) return _init;
                 var objectName = typeof(T).ToString();
                 var gameObject = GameObject.Find(objectName);
-                if (gameObject == null) gameObject = new GameObject(objectName);
+                if (gameObject is null) gameObject = new GameObject(objectName);
                 _init = gameObject.AddComponent<T>();
                 return _init;
             }
@@ -24,7 +24,7 @@ public class SingleMono<T> : MonoBehaviour where T : MonoBehaviour {
     }
 
     // protected void Awake() {
-    //     if (_init == null) _init = this as T;
+    //     if (_init is null) _init = this as T;
     //     else if (_init != this) Destroy(gameObject);
     //     DontDestroyOnLoad(gameObject);
     // }
@@ -35,7 +35,7 @@ public class SingleTon<T> where T : new() {
 
     public static T Instance {
         get {
-            if (_init != null) return _init;
+            if (_init is not null) return _init;
             return _init = new T();
         }
     }
