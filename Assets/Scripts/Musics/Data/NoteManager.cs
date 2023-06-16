@@ -33,7 +33,7 @@ namespace Musics.Data {
                 > 8 => 1.5f - subTime * 0.0625f,
                 _ => 1
             } * (MusicManager.GetCurrentGameMode() == GameMode.Keypad ? 1 : 2);
-            _allowedTime = _noteTime / 10;
+            _allowedTime = 0.3f;
         }
 
         public static void NoteSpeedUp(bool shift) {
@@ -72,9 +72,9 @@ namespace Musics.Data {
             _writeNoteData = new List<NoteData>();
         }
 
-        public static void Start() {
+        public static void Start(float after) {
             Debug.Log("Data Start");
-            Ticker.Instance.Write();
+            Ticker.Instance.Write(after);
         }
 
         public static void Stop(bool save) {

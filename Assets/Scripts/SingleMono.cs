@@ -3,18 +3,18 @@ using Utils;
 
 public class SingleMono<T> : MonoBehaviour where T : MonoBehaviour {
     private static T _init;
-    private static readonly object Sync = new object();
+    private static readonly object Sync = new();
 
     public static T Instance {
         get {
             lock (Sync) {
-                if (_init is not null) return _init;
+                if (_init != null) return _init;
                 var objects = FindObjectsOfType<T>();
                 if (objects.Length > 0) _init = objects[0];
                 else if (objects.Length > 1)
                     Debug.LogError("There is more than one " + typeof(T).Name + " in the scene.");
 
-                if (_init is not null) return _init;
+                if (_init != null) return _init;
                 var objectName = typeof(T).ToString();
                 var gameObject = GameObject.Find(objectName);
                 if (gameObject.IsDestroyed()) gameObject = new GameObject(objectName);

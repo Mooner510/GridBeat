@@ -25,10 +25,15 @@ namespace Musics {
 
         public void ResetWrite() => _writeTime = Time.realtimeSinceStartup;
 
-        public void Write() {
+        public void Write(float after) {
             Debug.Log("Write Start");
-            _writeTime = Time.realtimeSinceStartup;
+            _writeTime = Time.realtimeSinceStartup + after;
             _readTick = true;
+            StartCoroutine(PlayIt(after));
+        }
+
+        private IEnumerator PlayIt(float after) {
+            yield return new WaitForSecondsRealtime(after);
             // _routine = StartCoroutine(ReadTick());
             musicSound.PlayOneShot(MusicManager.Instance.GetCurrentMusicData().mainAudio);
         }
@@ -67,12 +72,12 @@ namespace Musics {
         }
 
         protected virtual void Tick() {
-            var now = GetPlayTime();
+            var now = GetPlayTime() + KeyListener.NoteTime;
             var i = 0;
             do {
                 var note = NoteManager.Pick(i);
-                if (note.time <= now + KeyListener.NoteTime) {
-                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop()));
+                if (note.time <= now) {
+                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), now - note.time + KeyListener.NoteTime));
                 } else break;
             } while (!NoteManager.IsTop(++i));
         }
@@ -88,7 +93,7 @@ namespace Musics {
                     var note = NoteManager.Pick(i);
                     if (note.time <= now + 1) {
                         // Debug.Log($"Tick: {note.time}");
-                        StartCoroutine(Player.Instance.Accept(NoteManager.Pop()));
+                        StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), 1));
                     }
                 } while (!NoteManager.IsTop(++i));
             }
