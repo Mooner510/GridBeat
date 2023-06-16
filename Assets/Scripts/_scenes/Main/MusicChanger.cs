@@ -2,13 +2,14 @@
 using System.Collections;
 using DG.Tweening;
 using JetBrains.Annotations;
+using Musics;
 using Musics.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
 
-namespace Musics {
+namespace Main {
     public class MusicChanger : SingleMono<MusicChanger> {
         [SerializeField] private Image image;
         [SerializeField] private Text title;

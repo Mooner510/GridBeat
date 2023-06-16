@@ -4,8 +4,8 @@ using UnityEngine;
 namespace PlayerData.Entity {
     [Serializable]
     public class UserData {
-        public KeyData keyData = new KeyData();
-        public NoteData noteData = new NoteData();
+        public KeyData keyData = new();
+        public NoteData noteData = new();
     }
 
     [Serializable]

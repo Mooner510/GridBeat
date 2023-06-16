@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
-namespace Listener {
+namespace InGame.Listener {
     public class KeyListener : SingleMono<KeyListener> {
         
         [SerializeField] protected Image scoreImage;
