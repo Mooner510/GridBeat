@@ -61,7 +61,7 @@ namespace Musics {
 
         protected static IEnumerator Follow(GameObject obj, int note) {
             while (true) {
-                if(obj.IsDestroyed()) break;
+                if (obj.IsDestroyed()) break;
                 obj.transform.position = MapMaker.Instance.GetNote(note).transform.position;
                 yield return null;
             }

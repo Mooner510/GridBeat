@@ -23,6 +23,6 @@ namespace Utils {
     
         public static Vector2 TransferCanvasLocation(Vector2 vector) => new(vector.x + 366, vector.y + 305.8f);
         
-        public static bool IsDestroyed(this GameObject gameObject) => !ReferenceEquals(gameObject, null);
+        public static bool IsDestroyed(this GameObject gameObject) => gameObject == null && !ReferenceEquals(gameObject, null);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Listener;
 using Musics.Data;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Musics {
 
         private bool _readTick;
         private float _writeTime;
+        private float _focusOutTime;
 
         public void Beat() {
             // if (_beat) return;
@@ -20,6 +22,11 @@ namespace Musics {
         public bool IsTickReading() => _readTick;
 
         public float GetStartTime() => _writeTime;
+
+        private void OnApplicationFocus(bool hasFocus) {
+            if (hasFocus) _writeTime += Time.realtimeSinceStartup - _focusOutTime;
+            else _focusOutTime = Time.realtimeSinceStartup;
+        }
 
         public float GetPlayTime() => Time.realtimeSinceStartup - _writeTime;
 
