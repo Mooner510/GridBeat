@@ -1,11 +1,11 @@
 ﻿using System.Collections;
+using _scenes.InGame.Listener;
 using DG.Tweening;
-using InGame.Listener;
 using Musics.Data;
 using UnityEngine;
 using Utils;
 
-namespace Musics {
+namespace _scenes.InGame.Player {
     public class QuadPlayer : Player {
 
         private static readonly Color ClickColor = new(0f, 0.8f, 0.8f, 0.5f);

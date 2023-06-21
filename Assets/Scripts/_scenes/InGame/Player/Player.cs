@@ -1,14 +1,15 @@
 ﻿using System.Collections;
+using _scenes.InGame.Listener;
+using _scenes.InGame.Map;
 using DG.Tweening;
-using InGame.Listener;
-using Map;
+using Musics;
 using Musics.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
 
-namespace Musics {
+namespace _scenes.InGame.Player {
     public class Player : SingleMono<Player> {
         [SerializeField] protected GameObject beatInspector;
         [SerializeField] private SpriteRenderer hider;

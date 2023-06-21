@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _scenes.InGame.Player;
 using Score;
 using UnityEngine;
 using Utils;

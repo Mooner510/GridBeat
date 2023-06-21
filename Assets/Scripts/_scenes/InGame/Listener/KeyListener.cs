@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using _scenes.InGame.Map;
+using _scenes.InGame.Player;
 using DG.Tweening;
-using Map;
 using Musics;
 using Musics.Data;
 using Score;
@@ -10,7 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
-namespace InGame.Listener {
+namespace _scenes.InGame.Listener {
     public class KeyListener : SingleMono<KeyListener> {
         
         [SerializeField] protected Image scoreImage;
@@ -52,13 +53,13 @@ namespace InGame.Listener {
 
         public void Update() {
             if (!MusicManager.Instance.IsPlayMode() && Input.GetKeyDown(KeyCode.Backspace)) {
-                Player.Instance.Stop(true);
+                Player.Player.Instance.Stop(true);
                 return;
             }
 
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 if(!Ticker.Instance.IsTickReading()) return;
-                Player.Instance.Stop(false);
+                Player.Player.Instance.Stop(false);
                 return;
             }
         

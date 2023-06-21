@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
 
-namespace Main {
+namespace _scenes.Main {
     public class MusicChanger : SingleMono<MusicChanger> {
         [SerializeField] private Image image;
         [SerializeField] private Text title;

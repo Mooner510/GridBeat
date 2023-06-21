@@ -1,7 +1,7 @@
-﻿using InGame.Listener;
+﻿using _scenes.InGame.Listener;
 using Musics.Data;
 
-namespace Musics {
+namespace _scenes.InGame.Player {
     public class QuadTicker : Ticker {
         protected override void Tick() {
             var now = GetPlayTime() + KeyListener.NoteTime;

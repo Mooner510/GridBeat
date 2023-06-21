@@ -4,7 +4,7 @@ using Musics.Data;
 using UnityEngine;
 using Utils;
 
-namespace Map {
+namespace _scenes.InGame.Map {
     public class MapMaker : SingleMono<MapMaker> {
         protected GameObject[] notes;
         protected GameObject[] backNotes;

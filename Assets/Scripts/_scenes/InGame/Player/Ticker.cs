@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections;
-using InGame.Listener;
+﻿using System.Collections;
+using _scenes.InGame.Listener;
+using Musics;
 using Musics.Data;
 using UnityEngine;
 
-namespace Musics {
+namespace _scenes.InGame.Player {
     public class Ticker : SingleMono<Ticker> {
         [SerializeField] private AudioSource beatSound;
         [SerializeField] private AudioSource musicSound;

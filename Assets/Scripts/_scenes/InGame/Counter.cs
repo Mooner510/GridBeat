@@ -1,9 +1,10 @@
 ﻿using System.Collections;
-using Map;
+using _scenes.InGame.Map;
+using Score;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Score {
+namespace _scenes.InGame {
     public class Counter : SingleMono<Counter> {
         private static int _combo;
         private static double _score;

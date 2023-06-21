@@ -4,7 +4,7 @@ using Musics.Data;
 using Score;
 using UnityEngine;
 
-namespace InGame.Listener {
+namespace _scenes.InGame.Listener {
     public class QuadKeyListener : KeyListener {
         protected override void SetUp() {
             keyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey;

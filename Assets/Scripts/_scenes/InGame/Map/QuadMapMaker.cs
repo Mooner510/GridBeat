@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using Musics;
 using Musics.Data;
 using UnityEngine;
 using Utils;
 
-namespace Map {
+namespace _scenes.InGame.Map {
     public class QuadMapMaker : MapMaker {
         private void Start() {
             notes = new GameObject[4];

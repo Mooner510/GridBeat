@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using _scenes.InGame;
 using DG.Tweening;
 using Musics;
 using Resource;
@@ -9,7 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
 
-namespace UI {
+namespace _scenes.End {
     public class EndAnimationManager : SingleMono<EndAnimationManager> {
         [SerializeField] private Image image;
         [SerializeField] private Text newRecord;
