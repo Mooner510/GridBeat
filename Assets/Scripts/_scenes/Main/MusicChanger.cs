@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using _scenes.Main.MultiPlay;
 using DG.Tweening;
 using JetBrains.Annotations;
 using Musics;
@@ -83,32 +84,32 @@ namespace _scenes.Main {
             speedText.color = SpeedColors[(int) NoteManager.GetNoteSpeed() / 2];
 
             _clickSequence = DOTween.Sequence()
-                .SetAutoKill(false)
+                .SetAutoKill(false).Pause()
                 .OnStart(() => suggestion2.transform.localScale = Vector3.one * 1.2f)
                 .Append(suggestion2.transform.DOScale(Vector3.one, 1).SetEase(Ease.OutCubic));
             _sequences = new[] {
                 DOTween.Sequence()
-                    .SetAutoKill(false)
+                    .SetAutoKill(false).Pause()
                     .OnStart(() => left.transform.localScale = Vector3.one * 1.2f)
                     .Append(left.transform.DOScale(Vector3.one, 1).SetEase(Ease.OutCubic)),
                 DOTween.Sequence()
-                    .SetAutoKill(false)
+                    .SetAutoKill(false).Pause()
                     .OnStart(() => right.transform.localScale = Vector3.one * 1.2f)
                     .Append(right.transform.DOScale(Vector3.one, 1).SetEase(Ease.OutCubic)),
                 DOTween.Sequence()
-                    .SetAutoKill(false)
+                    .SetAutoKill(false).Pause()
                     .OnStart(() => selectorUp.transform.localScale = Vector3.one * 1.2f)
                     .Append(selectorUp.transform.DOScale(Vector3.one, 1).SetEase(Ease.OutCubic)),
                 DOTween.Sequence()
-                    .SetAutoKill(false)
+                    .SetAutoKill(false).Pause()
                     .OnStart(() => selectorDown.transform.localScale = Vector3.one * 1.2f)
                     .Append(selectorDown.transform.DOScale(Vector3.one, 1).SetEase(Ease.OutCubic)),
                 DOTween.Sequence()
-                    .SetAutoKill(false)
+                    .SetAutoKill(false).Pause()
                     .OnStart(() => speedUp.transform.localScale = Vector3.one * 1.2f)
                     .Append(speedUp.transform.DOScale(Vector3.one, 1).SetEase(Ease.OutCubic)),
                 DOTween.Sequence()
-                    .SetAutoKill(false)
+                    .SetAutoKill(false).Pause()
                     .OnStart(() => speedDown.transform.localScale = Vector3.one * 1.2f)
                     .Append(speedDown.transform.DOScale(Vector3.one, 1).SetEase(Ease.OutCubic)),
             };
@@ -289,6 +290,7 @@ namespace _scenes.Main {
         };
 
         private void Update() {
+            if(MultiplayUI.isUIEnabled) return;
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) {
                 speedUp.text = "X ++";
                 speedDown.text = "-- Z";

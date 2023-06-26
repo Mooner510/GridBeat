@@ -32,6 +32,7 @@ namespace _scenes.InGame.Listener {
             increases.text = "";
             _scoreSequence = DOTween.Sequence()
                 .SetAutoKill(false)
+                .Pause()
                 .OnStart(() => {
                     var trans = increases.transform;
                     trans.localPosition = BeforeScorePos;

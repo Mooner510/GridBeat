@@ -12,7 +12,7 @@ namespace Utils {
 
         private static RectTransform _canvas;
 
-        public static RectTransform Canvas => _canvas ? _canvas : _canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        public static RectTransform Canvas => _canvas == null ? _canvas = GameObject.Find("Canvas").GetComponent<RectTransform>() : _canvas;
 
         public static Vector2 LocationToCanvas(Vector2 vector) {
             if (Camera.main is null) return new Vector2();
