@@ -20,9 +20,17 @@ namespace Musics {
 
         public static GameMode GetGameMode() => _gameMode;
 
-        public static void DifficultyUp() => _difficulty++;
+        public static void DifficultyUp() {
+            var maps = Instance.GetMusicData().mapData;
+            do _difficulty = _difficulty.Next();
+            while (maps.ContainsKey(_difficulty));
+        }
 
-        public static void DifficultyDown() => _difficulty--;
+        public static void DifficultyDown() {
+            var maps = Instance.GetMusicData().mapData;
+            do _difficulty = _difficulty.Prev();
+            while (maps.ContainsKey(_difficulty));
+        }
 
         public static MusicDifficulty GetDifficulty() => _difficulty;
         // if (SceneManager.GetActiveScene().name.Equals("End")) return _gameMode;   
@@ -96,6 +104,7 @@ namespace Musics {
                     musicInfo = info,
                     mapData = mapDic,
                     audio = Resources.Load<AudioClip>($"{newPath}/audio"),
+                    background = Resources.Load<Sprite>($"{newPath}/background"),
                     image = Resources.Load<Sprite>($"{newPath}/image"),
                     blurImage = Resources.Load<Sprite>($"{newPath}/blur"),
                     previewAudio = Resources.Load<AudioClip>($"{newPath}/preview"),

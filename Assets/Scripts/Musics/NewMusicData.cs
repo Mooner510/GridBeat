@@ -12,6 +12,12 @@ namespace Musics {
     public static class MusicDifficultyUtils {
         public static readonly MusicDifficulty[] MusicDifficulties =
             {MusicDifficulty.Easy, MusicDifficulty.Normal, MusicDifficulty.Hard, MusicDifficulty.Master};
+
+        public static MusicDifficulty Next(this MusicDifficulty diff) =>
+            MusicDifficulties[((int) diff + 1) % MusicDifficulties.Length];
+        
+        public static MusicDifficulty Prev(this MusicDifficulty diff) =>
+            MusicDifficulties[((int) diff - 1 + MusicDifficulties.Length) % MusicDifficulties.Length];
     }
     
     [Serializable]
