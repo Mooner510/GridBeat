@@ -64,12 +64,9 @@ namespace Musics.Data {
             Ticker.Instance.Write(after);
         }
 
-        public static void Stop(bool save) {
+        public static void Stop() {
             Debug.Log("Stop and Save");
             Ticker.Instance.StopWriteSoftness();
-            if (!MusicManager.Instance.IsPlayMode() && save) {
-                MusicManager.Instance.GetCurrentMusicData().Update();
-            }
         }
     }
 }

@@ -124,7 +124,7 @@ namespace _scenes.Main {
             _subTitle.transform.SetParent(GameUtils.Canvas, false);
             _subTitle.text = musicData.name;
 
-            var gameMode = MusicManager.GetGameMode();
+            var gameMode = MusicManager.GetCurrentGameMode();
             keypadImage.enabled = gameMode == GameMode.Keypad;
             quadImage.enabled = gameMode == GameMode.Quad;
             modeText.color = gameMode.GetColor();
@@ -175,7 +175,7 @@ namespace _scenes.Main {
         }
 
         private void UpdateSuggestion(MusicData musicData) {
-            var noteData = musicData.GetNoteData(MusicManager.GetGameMode());
+            var noteData = musicData.GetNoteData(MusicManager.GetCurrentGameMode());
             if (noteData == null || noteData.Length <= 0) {
                 suggestion1.text = "Press E to Record";
                 suggestion2.text = "This music doesn't have note map!";
@@ -314,7 +314,7 @@ namespace _scenes.Main {
                 StartCoroutine(MoveRight());
                 _sequences[1].Restart();
             } else {
-                var gameMode = MusicManager.GetGameMode();
+                var gameMode = MusicManager.GetCurrentGameMode();
                 if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) ||
                     Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
                     if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) _sequences[2].Restart();
