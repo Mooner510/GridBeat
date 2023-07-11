@@ -13,7 +13,7 @@ namespace Musics.Data {
         private static int _inputDelay;
 
         public static float GetNoteSpeed() => _noteSpeed / 10f;
-        public static float GetNoteTime() => _noteTime;
+        public static float GetNoteTime() => _noteTime * (NewMusicManager.GetGameMode() == GameMode.Keypad ? 1 : 2);
         public static float GetNoteAllowedTime() => _allowedTime;
         public static int GetInputDelay() => _inputDelay;
         public static void SetInputDelay(int value) => _inputDelay = value;
@@ -33,7 +33,7 @@ namespace Musics.Data {
                 < 8 => 2.7144f - subTime * 0.2143f,
                 > 8 => 1.5f - subTime * 0.0625f,
                 _ => 1
-            } * (NewMusicManager.GetGameMode() == GameMode.Keypad ? 1 : 2);
+            };
             _allowedTime = 0.3f;
         }
 
