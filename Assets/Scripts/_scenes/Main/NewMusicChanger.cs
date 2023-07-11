@@ -17,7 +17,7 @@ namespace _scenes.Main {
 
         [Header("Music Info")]
         [SerializeField] private Image musicLevelImage;
-
+        [SerializeField] private Image backgroundImage;
         [SerializeField] private TextMeshProUGUI musicNameText;
         [SerializeField] private TextMeshProUGUI musicArtistText;
         [SerializeField] private TextMeshProUGUI musicDurationText;
@@ -57,9 +57,6 @@ namespace _scenes.Main {
             new(300, 300)
         };
 
-        private static readonly Vector3 DifficultyLocation = new(-12, -12);
-        private static readonly Vector3 GameModeLocation = new(12, -12);
-
         #endregion
         
         private bool _canStart;
@@ -82,36 +79,36 @@ namespace _scenes.Main {
         ) {
             NewMusicData musicData;
             if (isRight) {
-                musicData = NewMusicManager.Instance.Next();
-                for (var i = -2; i <= 2; i++) {
-                    var rectTransform = musicImages[i + 3].rectTransform;
-                    rectTransform.DOLocalMove(ImageLocations[i + 4], 0.6f).SetEase(Ease.OutCubic);
-                    rectTransform.DOSizeDelta(ImageSizeDelta[i + 4], 0.6f).SetEase(Ease.OutCubic);
-                }
-
-                Destroy(musicImages[0].gameObject, 0.6f);
-                var copy = new Image[musicImages.Length];
-                Array.Copy(musicImages, 0, copy, 1, musicImages.Length - 1);
-                var newImage = Instantiate(image, ImageLocations[0], Quaternion.identity, GameUtils.Canvas)
-                    .GetComponent<Image>();
-                newImage.sprite = NewMusicManager.Instance.GetMusicData(-3).image;
-                copy[0] = newImage;
-                musicImages = copy;
-            } else {
                 musicData = NewMusicManager.Instance.Back();
-                for (var i = -2; i <= 2; i++) {
+                for (var i = -2; i <= 3; i++) {
                     var rectTransform = musicImages[i + 3].rectTransform;
-                    rectTransform.DOLocalMove(ImageLocations[i + 2], 0.6f).SetEase(Ease.OutCubic);
-                    rectTransform.DOSizeDelta(ImageSizeDelta[i + 2], 0.6f).SetEase(Ease.OutCubic);
+                    rectTransform.DOLocalMove(ImageLocations[i + 2], 0.5f).SetEase(Ease.OutCubic);
+                    rectTransform.DOSizeDelta(ImageSizeDelta[i + 2], 0.5f).SetEase(Ease.OutCubic);
                 }
 
-                Destroy(musicImages[^1].gameObject, 0.6f);
+                Destroy(musicImages[0].gameObject, 0.5f);
                 var copy = new Image[musicImages.Length];
                 Array.Copy(musicImages, 1, copy, 0, musicImages.Length - 1);
-                var newImage = Instantiate(image, ImageLocations[^1], Quaternion.identity, GameUtils.Canvas)
-                    .GetComponent<Image>();
+                var newImage = Instantiate(image, ImageLocations[^1], Quaternion.identity, GameUtils.Canvas).GetComponent<Image>();
+                newImage.rectTransform.localPosition = ImageLocations[^1];
                 newImage.sprite = NewMusicManager.Instance.GetMusicData(3).image;
                 copy[^1] = newImage;
+                musicImages = copy;
+            } else {
+                musicData = NewMusicManager.Instance.Next();
+                for (var i = -3; i <= 2; i++) {
+                    var rectTransform = musicImages[i + 3].rectTransform;
+                    rectTransform.DOLocalMove(ImageLocations[i + 4], 0.5f).SetEase(Ease.OutCubic);
+                    rectTransform.DOSizeDelta(ImageSizeDelta[i + 4], 0.5f).SetEase(Ease.OutCubic);
+                }
+
+                Destroy(musicImages[^1].gameObject, 0.5f);
+                var copy = new Image[musicImages.Length];
+                Array.Copy(musicImages, 0, copy, 1, musicImages.Length - 1);
+                var newImage = Instantiate(image, ImageLocations[0], Quaternion.identity, GameUtils.Canvas).GetComponent<Image>();
+                newImage.rectTransform.localPosition = ImageLocations[0];
+                newImage.sprite = NewMusicManager.Instance.GetMusicData(-3).image;
+                copy[0] = newImage;
                 musicImages = copy;
             }
 
@@ -122,6 +119,7 @@ namespace _scenes.Main {
             var difficulty = NewMusicManager.GetDifficulty();
             musicNameText.text = musicData.musicInfo.name;
             musicArtistText.text = musicData.musicInfo.artist;
+            backgroundImage.sprite = musicData.blurImage;
             musicDurationText.text = $"{musicData.musicInfo.playTime / 60:00}:{musicData.musicInfo.playTime % 60:00}";
             musicLevelImage.sprite = musicLevelImages[musicData.mapData[difficulty].level - 1];
             difficultyImage.sprite = difficultyImages[(int) difficulty];
@@ -129,6 +127,19 @@ namespace _scenes.Main {
             audioPlayer.Stop();
             audioPlayer.clip = musicData.previewAudio;
             audioPlayer.Play();
+        }
+
+        private static readonly Vector3 MainScale = new(1, 1, 1);
+        private static readonly Vector3 BigScale = new(1.02f, 1.02f, 1.02f);
+        
+        private IEnumerator Beat(Transform obj, float offset, float bpm) {
+            float delay = 60f / bpm;
+            yield return new WaitForSecondsRealtime(offset);
+            while (true) {
+                obj.DOScale(BigScale, delay / 2).SetEase(Ease.OutCubic)
+                    .OnComplete(() => obj.DOScale(MainScale, delay / 2));
+                yield return new WaitForSecondsRealtime(delay);
+            }
         }
 
         private IEnumerator StartMusic(GameMode gameMode) {
@@ -147,11 +158,6 @@ namespace _scenes.Main {
                     throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null);
             }
         }
-
-        private static readonly Color Unshift = new(0.4f, 0.4f, 0.4f);
-        private static readonly Color Shift = new(0.7128526f, 1f, 0.4198113f);
-        private static readonly Color SuperColor = new(1f, 0.4271304f, 0.3820755f);
-        private static readonly Color DefaultColor = new(0.6980392f, 0.6980392f, 0.6980392f);
 
         private static readonly Color[] SpeedColors = {
             new(0.2044074f, 1f, 0.272549f),

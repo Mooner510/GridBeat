@@ -251,7 +251,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2100, y: 2100}
+  m_SizeDelta: {x: 2500, y: 2500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216427087
 MonoBehaviour:
@@ -878,6 +878,7 @@ MonoBehaviour:
   difficultyImage: {fileID: 829688223}
   gameModeImage: {fileID: 433057336}
   musicLevelImage: {fileID: 1779876510}
+  backgroundImage: {fileID: 216427087}
   musicNameText: {fileID: 1830834163}
   musicArtistText: {fileID: 1542707304}
   musicDurationText: {fileID: 1327301775}
