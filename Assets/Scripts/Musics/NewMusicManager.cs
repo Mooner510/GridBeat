@@ -45,13 +45,13 @@ namespace Musics {
 
         public NewMusicData GetMusicData(int addition) =>
             _gameMode == GameMode.Keypad
-                ? _keypadMusic[(_keypadSelection + addition) % _keypadMusic.Count]
-                : _quadMusic[(_quadSelection + addition) % _quadMusic.Count];
+                ? _keypadMusic[(_keypadSelection + addition+_keypadMusic.Count*3) % _keypadMusic.Count]
+                : _quadMusic[(_quadSelection + addition+_quadMusic.Count*3) % _quadMusic.Count];
 
         public NewMusicData GetMusicDataAdd(int addition) =>
             _gameMode == GameMode.Keypad
-                ? _keypadMusic[(_keypadSelection += addition) % _keypadMusic.Count]
-                : _quadMusic[(_quadSelection += addition) % _quadMusic.Count];
+                ? _keypadMusic[(_keypadSelection += addition+_keypadMusic.Count*3) % _keypadMusic.Count]
+                : _quadMusic[(_quadSelection += addition+_quadMusic.Count*3) % _quadMusic.Count];
 
         public NewMusicData GetMusicDataSet(int set) =>
             _gameMode == GameMode.Keypad ? _keypadMusic[(_keypadSelection = set) % _keypadMusic.Count] : _quadMusic[(_quadSelection = set) % _quadMusic.Count];
