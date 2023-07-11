@@ -25,6 +25,7 @@ namespace Musics {
         public NewMusicInfo musicInfo;
         public Dictionary<MusicDifficulty, MapData> mapData;
         [CanBeNull] public VideoClip video;
+        [CanBeNull] public Sprite background;
         public Sprite image;
         public Sprite blurImage;
         public AudioClip audio;
