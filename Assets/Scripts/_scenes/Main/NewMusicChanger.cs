@@ -150,10 +150,10 @@ namespace _scenes.Main {
             yield return new WaitForSecondsRealtime(3);
             switch (gameMode) {
                 case GameMode.Keypad:
-                    SceneManager.LoadScene(1);
+                    SceneManager.LoadScene("Scenes/InGame");
                     break;
                 case GameMode.Quad:
-                    SceneManager.LoadScene(2);
+                    SceneManager.LoadScene("Scenes/InGame-Quad");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null);

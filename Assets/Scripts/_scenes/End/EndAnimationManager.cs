@@ -35,7 +35,7 @@ namespace _scenes.End {
             rank.color = GameUtils.ClearWhite;
             SetUp();
             StartCoroutine(Animation());
-            button.onClick.AddListener(() => SceneManager.LoadScene(0));
+            button.onClick.AddListener(() => SceneManager.LoadScene("Scenes/NewMain"));
         }
 
         private void SetUp() {
