@@ -38,8 +38,8 @@ namespace _scenes.Main.Setting {
         }
         
         public void NoteSpeed(bool isUp) {
-            if(isUp) NewNoteManager.NoteSpeedUp(false);
-            else NewNoteManager.NoteSpeedDown(false);
+            if(isUp) NewNoteManager.NoteSpeedUp(Input.GetKey(KeyCode.LeftShift));
+            else NewNoteManager.NoteSpeedDown(Input.GetKey(KeyCode.LeftShift));
             noteSpeed.text = $"{NewNoteManager.GetNoteSpeed():#.0}";
         }
         
