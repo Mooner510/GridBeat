@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Musics.Data;
@@ -74,29 +75,33 @@ namespace Musics {
 
             List<NewMusicData> quadMusic = new List<NewMusicData>();
             List<NewMusicData> keypadMusic = new List<NewMusicData>();
-            var directories = Directory.GetDirectories("Assets/Data/Maps");
+            var directories = Directory.GetDirectories("Assets/Resources/Maps");
+            Debug.Log($"Founded Maps: {string.Join(", ", directories)}");
             foreach (var directory in directories) {
-                var info = Json.LoadJsonFile<NewMusicInfo>($"Assets/Data/Maps/{directory}/data.json");
+                var info = Json.LoadJsonFile<NewMusicInfo>($"{directory}/data.json");
 
                 var mapDic = new Dictionary<MusicDifficulty, MapData>();
                 foreach (var difficulty in MusicDifficultyUtils.MusicDifficulties) {
                     try {
-                        mapDic.Add(difficulty,
-                            Json.LoadJsonFile<MapData>($"Assets/Data/Maps/{directory}/map-{difficulty.ToString()}.json"));
+                        mapDic.Add(difficulty, Json.LoadJsonFile<MapData>($"{directory}/map-{difficulty.ToString()}.json"));
+                        Debug.Log($"{directory} - Founded Level: {difficulty.ToString()}");
                     } catch {
                         // ignored
                     }
                 }
 
-                (info.isKeypad ? keypadMusic : quadMusic).Add(new NewMusicData {
+                var newPath = directory[17..].Replace('\\', '/');
+                Debug.Log($"DIR: {newPath}");
+                var musicData = new NewMusicData {
                     musicInfo = info,
                     mapData = mapDic,
-                    audio = Resources.Load<AudioClip>($"Assets/Data/Maps/{directory}/audio.ogg"),
-                    image = Resources.Load<Sprite>($"Assets/Data/Maps/{directory}/image.png"),
-                    blurImage = Resources.Load<Sprite>($"Assets/Data/Maps/{directory}/blur.png"),
-                    previewAudio = Resources.Load<AudioClip>($"Assets/Data/Maps/{directory}/preview.MP3"),
-                    video = Resources.Load<VideoClip>($"Assets/Data/Maps/{directory}/video.mp4")
-                });
+                    audio = Resources.Load<AudioClip>($"{newPath}/audio"),
+                    image = Resources.Load<Sprite>($"{newPath}/image"),
+                    blurImage = Resources.Load<Sprite>($"{newPath}/blur"),
+                    previewAudio = Resources.Load<AudioClip>($"{newPath}/preview"),
+                    video = Resources.Load<VideoClip>($"{newPath}/video")
+                };
+                (info.isKeypad ? keypadMusic : quadMusic).Add(musicData);
             }
 
             _quadMusic = quadMusic;

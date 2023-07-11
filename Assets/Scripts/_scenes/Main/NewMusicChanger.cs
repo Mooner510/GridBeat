@@ -74,10 +74,6 @@ namespace _scenes.Main {
                 musicImages[i + 3].sprite = musicData.image;
             }
 
-            _sequences = new[] {
-                DOTween.Sequence().Pause()
-            };
-
             Refresh(NewMusicManager.Instance.GetMusicData());
         }
 
@@ -127,7 +123,7 @@ namespace _scenes.Main {
             musicNameText.text = musicData.musicInfo.name;
             musicArtistText.text = musicData.musicInfo.artist;
             musicDurationText.text = $"{musicData.musicInfo.playTime / 60:00}:{musicData.musicInfo.playTime % 60:00}";
-            musicLevelImage.sprite = musicLevelImages[musicData.mapData[difficulty].level];
+            musicLevelImage.sprite = musicLevelImages[musicData.mapData[difficulty].level - 1];
             difficultyImage.sprite = difficultyImages[(int) difficulty];
 
             audioPlayer.Stop();
