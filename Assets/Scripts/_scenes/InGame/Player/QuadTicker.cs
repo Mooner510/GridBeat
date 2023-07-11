@@ -8,8 +8,8 @@ namespace _scenes.InGame.Player {
             var i = 0;
             do {
                 var note = NewNoteManager.Pick(i).note;
-                if (note.offset <= now) {
-                    StartCoroutine(Player.Instance.Accept(NewNoteManager.Pop(), (now - note.offset) / 1000f + KeyListener.NoteTime));
+                if (note.offset + NewNoteManager.GetInputDelay() <= now) {
+                    StartCoroutine(Player.Instance.Accept(NewNoteManager.Pop(), (now - note.offset - NewNoteManager.GetInputDelay()) / 1000f + KeyListener.NoteTime));
                 } else break;
             } while (!NewNoteManager.IsTop(++i));
         }
