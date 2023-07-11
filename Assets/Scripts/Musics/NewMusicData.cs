@@ -39,9 +39,9 @@ namespace Musics {
         public NewNote[] notes;
     }
     
-    public static class MapDataUtils {
+    public static class NewMusicUtils {
         public static PlayableNote[] CreatePlayableNote(this NewMusicData data) {
-            var mapData = data.mapData[NewMusicManager.GetDifficulty()];
+            var mapData = GetMapData(data);
             
             var length = mapData.notes.Length;
             var notes = new PlayableNote[length];
@@ -54,6 +54,8 @@ namespace Musics {
 
             return notes;
         }
+        
+        public static MapData GetMapData(this NewMusicData data) => data.mapData[NewMusicManager.GetDifficulty()];
     }
 
     [Serializable]
@@ -63,8 +65,10 @@ namespace Musics {
     }
 
     [Serializable]
-    public struct PlayableNote {
+    public class PlayableNote {
         public NewNote note;
         public bool isClicked;
+
+        public void Click() => isClicked = true;
     }
 }

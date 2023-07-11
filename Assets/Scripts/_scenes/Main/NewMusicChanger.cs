@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using _scenes.Main.MultiPlay;
 using DG.Tweening;
-using JetBrains.Annotations;
 using Musics;
 using Musics.Data;
 using TMPro;
@@ -214,17 +212,8 @@ namespace _scenes.Main {
                 //     speedText.text = $"{NoteManager.GetNoteSpeed():F1}";
                 //     speedText.color = SpeedColors[(int) NoteManager.GetNoteSpeed() / 2];
                 //     _sequences[4].Restart();
-                if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Return)) {
-                    // if (!_canStart) {
-                    //     _clickSequence.Restart();
-                    //     return;
-                    // }
-
-                    NewMusicManager.Instance.SetPlayMode(true);
-                    StopCoroutine(StartMusic(gameMode));
-                    StartCoroutine(StartMusic(gameMode));
-                } else if (Input.GetKeyDown(KeyCode.E)) {
-                    NewMusicManager.Instance.SetPlayMode(false);
+                
+                if (Input.GetKeyDown(KeyCode.E)) {
                     StopCoroutine(StartMusic(gameMode));
                     StartCoroutine(StartMusic(gameMode));
                 }

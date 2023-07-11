@@ -6,34 +6,27 @@ using Musics;
 using Musics.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Utils;
 
 namespace _scenes.InGame.Player {
     public class Player : SingleMono<Player> {
         [SerializeField] protected GameObject beatInspector;
         [SerializeField] private SpriteRenderer hider;
-        [SerializeField] private Text recording;
+        // [SerializeField] private Text recording;
 
         private static readonly Color ClickColor = new(0f, 0.8f, 0.8f, 0.3f);
 
         private void Start() {
-            if (MusicManager.Instance.IsPlayMode()) {
-                NoteManager.LoadCurrentData();
-                Debug.Log(NoteManager.GetNoteData().Count);
-                Debug.Log("Data Loaded");
-                recording.enabled = false;
-            } else recording.enabled = true;
             StartCoroutine(Init());
         }
 
-        public void Stop(bool save) {
+        public void Stop() {
             StopCoroutine(Init());
-            StartCoroutine(End(save));
+            StartCoroutine(End());
         }
 
-        private IEnumerator End(bool save) {
-            NoteManager.Stop(save);
+        private IEnumerator End() {
+            NewNoteManager.Stop();
             var color = hider.color;
             for (var i = 0f; i <= 3; i += Time.deltaTime) {
                 color.a = i / 3;
@@ -41,13 +34,13 @@ namespace _scenes.InGame.Player {
                 yield return null;
             }
             hider.color = Color.black;
-            SceneManager.LoadScene(MusicManager.Instance.IsPlayMode() ? 3 : 0);
+            SceneManager.LoadScene(0);
         }
 
         private IEnumerator Init() {
             var color = hider.color;
             Ticker.Instance.ResetWrite();
-            NoteManager.Start(4);
+            NewNoteManager.Start(4);
             for (var i = 0f; i <= 3; i += Time.deltaTime) {
                 color.a = 1 - i / 3;
                 hider.color = color;
@@ -55,9 +48,9 @@ namespace _scenes.InGame.Player {
             }
             hider.color = Color.clear;
             yield return new WaitForSecondsRealtime(1);
-            var data = MusicManager.Instance.GetCurrentMusicData();
-            yield return new WaitForSecondsRealtime(data.minute * 60 + data.second + 1);
-            StartCoroutine(End(true));
+            var data = NewMusicManager.Instance.GetMusicData();
+            yield return new WaitForSecondsRealtime(data.musicInfo.playTime);
+            StartCoroutine(End());
         }
 
         protected static IEnumerator Follow(GameObject obj, int note) {
@@ -68,13 +61,13 @@ namespace _scenes.InGame.Player {
             }
         }
 
-        public virtual IEnumerator Accept(LiveNoteData note, float time) {
+        public virtual IEnumerator Accept(PlayableNote note, float time) {
             // // 아에 안 멈출거 같은데?
             // if(time > 0) yield return new WaitForSecondsRealtime(time);
-            var obj = Instantiate(beatInspector, GameUtils.Locator(GameMode.Keypad, note.note), Quaternion.identity);
+            var obj = Instantiate(beatInspector, GameUtils.Locator(GameMode.Keypad, note.note.key), Quaternion.identity);
             var spriteRenderer = obj.GetComponent<SpriteRenderer>();
             
-            StartCoroutine(Follow(obj, note.note));
+            StartCoroutine(Follow(obj, note.note.key));
             
             obj.transform.DOScale(Vector3.one * 2f, time).SetEase(Ease.Linear);
             yield return new WaitForSecondsRealtime(time - KeyListener.AllowedTime);

@@ -42,7 +42,7 @@ namespace _scenes.InGame.Player {
         private IEnumerator PlayIt(float after) {
             yield return new WaitForSecondsRealtime(after);
             // _routine = StartCoroutine(ReadTick());
-            musicSound.PlayOneShot(MusicManager.Instance.GetCurrentMusicData().mainAudio);
+            musicSound.PlayOneShot(NewMusicManager.Instance.GetMusicData().audio);
         }
 
         public void StopWrite() {
@@ -74,7 +74,7 @@ namespace _scenes.InGame.Player {
 
         private void Update() {
             if (!_readTick) return;
-            if (!MusicManager.Instance.IsPlayMode() || NoteManager.IsTop(0)) return;
+            if (NewNoteManager.IsTop(0)) return;
             Tick();
         }
 
@@ -82,27 +82,27 @@ namespace _scenes.InGame.Player {
             var now = GetPlayTime() + KeyListener.NoteTime;
             var i = 0;
             do {
-                var note = NoteManager.Pick(i);
-                if (note.time <= now) {
-                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), now - note.time + KeyListener.NoteTime));
+                var note = NewNoteManager.Pick(i).note;
+                if (note.offset <= now) {
+                    StartCoroutine(Player.Instance.Accept(NewNoteManager.Pop(), now - note.offset + KeyListener.NoteTime));
                 } else break;
-            } while (!NoteManager.IsTop(++i));
+            } while (!NewNoteManager.IsTop(++i));
         }
 
         private IEnumerator ReadTick() {
             while (true) {
                 // yield return _seconds;
 
-                if (!MusicManager.Instance.IsPlayMode() || NoteManager.IsTop(0)) continue;
+                if (NewNoteManager.IsTop(0)) continue;
                 var now = GetPlayTime();
                 var i = 0;
                 do {
-                    var note = NoteManager.Pick(i);
-                    if (note.time <= now + 1) {
+                    var note = NewNoteManager.Pick(i).note;
+                    if (note.offset <= now + 1) {
                         // Debug.Log($"Tick: {note.time}");
-                        StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), 1));
+                        StartCoroutine(Player.Instance.Accept(NewNoteManager.Pop(), 1));
                     }
-                } while (!NoteManager.IsTop(++i));
+                } while (!NewNoteManager.IsTop(++i));
             }
             // ReSharper disable once FunctionNeverReturns
         }

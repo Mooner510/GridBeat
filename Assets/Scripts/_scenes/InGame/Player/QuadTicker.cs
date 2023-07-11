@@ -7,11 +7,11 @@ namespace _scenes.InGame.Player {
             var now = GetPlayTime() + KeyListener.NoteTime;
             var i = 0;
             do {
-                var note = NoteManager.Pick(i);
-                if (note.time <= now) {
-                    StartCoroutine(Player.Instance.Accept(NoteManager.Pop(), now - note.time + KeyListener.NoteTime));
+                var note = NewNoteManager.Pick(i).note;
+                if (note.offset <= now) {
+                    StartCoroutine(Player.Instance.Accept(NewNoteManager.Pop(), now - note.offset + KeyListener.NoteTime));
                 } else break;
-            } while (!NoteManager.IsTop(++i));
+            } while (!NewNoteManager.IsTop(++i));
         }
     }
 }

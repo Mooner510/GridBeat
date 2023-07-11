@@ -13,18 +13,17 @@ using Utils;
 
 namespace _scenes.InGame.Listener {
     public class KeyListener : SingleMono<KeyListener> {
-        
         [SerializeField] protected Image scoreImage;
         [SerializeField] protected Sprite[] sprites;
         [SerializeField] protected Text increases;
-        
+
         private Sequence _scoreSequence;
         private static readonly Vector3 BeforeScorePos = new(335f, 144f);
         private static readonly Vector3 ScorePos = new(346.5f, 144f);
 
         private KeyCode _code;
 
-        protected Queue<LiveNoteData>[] noteQueue;
+        protected Queue<PlayableNote>[] noteQueue;
         protected KeyCode[] keyCodes;
 
         private void Start() {
@@ -48,22 +47,22 @@ namespace _scenes.InGame.Listener {
         protected virtual void SetUp() {
             keyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.keypadKey;
             Debug.Log(keyCodes);
-            noteQueue = new Queue<LiveNoteData>[9];
-            for (var i = 0; i < 9; i++) noteQueue[i] = new Queue<LiveNoteData>();
+            noteQueue = new Queue<PlayableNote>[9];
+            for (var i = 0; i < 9; i++) noteQueue[i] = new Queue<PlayableNote>();
         }
 
         public void Update() {
-            if (!NewMusicManager.Instance.IsPlayMode() && Input.GetKeyDown(KeyCode.Backspace)) {
-                Player.Player.Instance.Stop(true);
+            if (Input.GetKeyDown(KeyCode.Backspace)) {
+                Player.Player.Instance.Stop();
                 return;
             }
 
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                if(!Ticker.Instance.IsTickReading()) return;
-                Player.Player.Instance.Stop(false);
+                if (!Ticker.Instance.IsTickReading()) return;
+                Player.Player.Instance.Stop();
                 return;
             }
-        
+
             // if (Input.GetKey(KeyCode.R)) {
             //     NoteManager.Stop();
             //     NoteManager.
@@ -77,22 +76,18 @@ namespace _scenes.InGame.Listener {
                 Debug.Log($"id: {i}");
                 MapMaker.Instance.Click(i);
                 Ticker.Instance.Beat();
-                if (!MusicManager.Instance.IsPlayMode()) {
-                    NoteManager.AddNote(i);
-                } else {
-                    LiveNoteData liveNoteData = null;
-                    while (noteQueue[i].Count > 0 && liveNoteData == null) {
-                        liveNoteData = noteQueue[i].Dequeue();
-                        if (liveNoteData.clicked) liveNoteData = null;
-                    }
-
-                    if (liveNoteData == null) return;
-                    var ticker = Ticker.Instance;
-                    liveNoteData.Click();
-                    var diff = Math.Abs(liveNoteData.time - ticker.GetPlayTime());
-                    Debug.Log($"{liveNoteData.time}: {diff}s");
-                    Spawn(liveNoteData, NoteManager.GetPerfect(diff));
+                PlayableNote liveNoteData = null;
+                while (noteQueue[i].Count > 0 && liveNoteData == null) {
+                    liveNoteData = noteQueue[i].Dequeue();
+                    if (liveNoteData.isClicked) liveNoteData = null;
                 }
+
+                if (liveNoteData == null) return;
+                var ticker = Ticker.Instance;
+                liveNoteData.Click();
+                var diff = Math.Abs(liveNoteData.note.offset - ticker.GetPlayTime());
+                Debug.Log($"{liveNoteData.note.offset}: {diff}s");
+                Spawn(liveNoteData, NewNoteManager.GetPerfect(diff));
             }
             // } else {
             //     var quadKey2 = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey2;
@@ -122,31 +117,34 @@ namespace _scenes.InGame.Listener {
             // }
         }
 
-        protected void Spawn(LiveNoteData data, ScoreType score) {
-            Debug.Log($"{data.time}, {score.GetTag()}");
-            var obj = Instantiate(scoreImage, GameUtils.LocationToCanvas(GameUtils.Locator(NewMusicManager.GetGameMode(), data.note)), Quaternion.identity);
+        protected void Spawn(PlayableNote data, ScoreType score) {
+            Debug.Log($"{data.note.offset}, {score.GetTag()}");
+            var obj = Instantiate(scoreImage,
+                GameUtils.LocationToCanvas(GameUtils.Locator(NewMusicManager.GetGameMode(), data.note.key)),
+                Quaternion.identity);
             obj.transform.SetParent(GameUtils.Canvas.transform, false);
             obj.sprite = sprites[(int) score];
-            increases.text = $"+{Counter.Instance.Count(data.note, score):n0}";
+            increases.text = $"+{Counter.Instance.Count(data.note.key, score):n0}";
             _scoreSequence.Restart();
         }
 
-        public void Queue(LiveNoteData data) => StartCoroutine(Enqueue(data));
+        public void Queue(PlayableNote data) => StartCoroutine(Enqueue(data));
 
-        public static float NoteTime => NoteManager.GetNoteTime();
-        public static float AllowedTime => NoteManager.GetNoteAllowedTime();
+        public static float NoteTime => NewNoteManager.GetNoteTime();
+        public static float AllowedTime => NewNoteManager.GetNoteAllowedTime();
 
-        protected virtual IEnumerator Enqueue(LiveNoteData data) {
+        protected virtual IEnumerator Enqueue(PlayableNote data) {
             // while (NoteQueue[data.note].Count > 1) {
             //     NoteQueue[data.note].Dequeue().Click();
             //     Spawn(data, ScoreType.Miss);
             // }
-            noteQueue[data.note].Enqueue(data);
+            var note = data.note;
+            noteQueue[note.key].Enqueue(data);
             yield return new WaitForSecondsRealtime(AllowedTime * 2);
-            if (data.clicked || (noteQueue[data.note].Count != 0 && noteQueue[data.note].Peek().clicked)) yield break;
+            if (data.isClicked || (noteQueue[note.key].Count != 0 && noteQueue[note.key].Peek().isClicked)) yield break;
             data.Click();
             Spawn(data, ScoreType.Miss);
-            noteQueue[data.note].Dequeue();
+            noteQueue[data.note.key].Dequeue();
         }
     }
 }

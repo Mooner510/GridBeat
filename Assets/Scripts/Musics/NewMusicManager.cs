@@ -8,7 +8,6 @@ using Utils;
 
 namespace Musics {
     public class NewMusicManager : SingleTon<NewMusicManager> {
-        private bool _isPlayMode;
         private List<NewMusicData> _quadMusic;
         private List<NewMusicData> _keypadMusic;
         private int _quadSelection;
@@ -69,10 +68,6 @@ namespace Musics {
             _difficulty = list[0];
             return data;
         }
-
-        public bool IsPlayMode() => _isPlayMode;
-
-        public void SetPlayMode(bool play) => _isPlayMode = play;
 
         private void ReloadAll() {
             Debug.Log("Reloading All Musics");

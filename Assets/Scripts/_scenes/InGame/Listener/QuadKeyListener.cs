@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Musics.Data;
+using Musics;
 using Score;
 using UnityEngine;
 
@@ -9,21 +9,22 @@ namespace _scenes.InGame.Listener {
         protected override void SetUp() {
             keyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey;
             Debug.Log(keyCodes);
-            noteQueue = new Queue<LiveNoteData>[4];
-            for (var i = 0; i < 4; i++) noteQueue[i] = new Queue<LiveNoteData>();
+            noteQueue = new Queue<PlayableNote>[4];
+            for (var i = 0; i < 4; i++) noteQueue[i] = new Queue<PlayableNote>();
         }
         
-        protected override IEnumerator Enqueue(LiveNoteData data) {
+        protected override IEnumerator Enqueue(PlayableNote data) {
             // while (NoteQueue[data.note].Count > 1) {
             //     NoteQueue[data.note].Dequeue().Click();
             //     Spawn(data, ScoreType.Miss);
             // }
-            noteQueue[data.note].Enqueue(data);
+            var note = data.note;
+            noteQueue[note.key].Enqueue(data);
             yield return new WaitForSecondsRealtime(AllowedTime * 2);
-            if (data.clicked || (noteQueue[data.note].Count != 0 && noteQueue[data.note].Peek().clicked)) yield break;
+            if (data.isClicked || (noteQueue[note.key].Count != 0 && noteQueue[note.key].Peek().isClicked)) yield break;
             data.Click();
             Spawn(data, ScoreType.Miss);
-            noteQueue[data.note].Dequeue();
+            noteQueue[note.key].Dequeue();
         }
     }
 }

@@ -39,10 +39,10 @@ namespace _scenes.End {
         }
 
         private void SetUp() {
-            var musicData = MusicManager.Instance.GetCurrentMusicData();
-            audioPlayer.clip = musicData.titleAudio;
+            var musicData = NewMusicManager.Instance.GetMusicData();
+            audioPlayer.clip = musicData.previewAudio;
             audioPlayer.Play();
-            var id = MusicManager.Instance.GetCurrentMusicId();
+            var id = NewMusicManager.Instance.GetMusicId();
             var max = PlayerPrefs.HasKey($"max:{id}") ? PlayerPrefs.GetFloat($"max:{id}") : 0;
             if (max < Counter.GetScore()) {
                 PlayerPrefs.SetFloat($"max:{id}", (float) Counter.GetScore());
@@ -57,15 +57,15 @@ namespace _scenes.End {
                     .Play();
             }
 
-            artist.DOText(musicData.name, .75f).SetEase(Ease.OutCubic).Play();
-            difficulty.DOText(StringUtils.ToRoman(musicData.difficulty), .75f).SetEase(Ease.OutCubic).Play();
+            artist.DOText(musicData.musicInfo.name, .75f).SetEase(Ease.OutCubic).Play();
+            difficulty.DOText(NewMusicManager.GetDifficulty().ToString(), .75f).SetEase(Ease.OutCubic).Play();
             image.sprite = musicData.blurImage;
             maxScore.text = $"{max:n0}";
         }
 
         private IEnumerator Animation() {
-            var musicData = MusicManager.Instance.GetCurrentMusicData();
-            var gameMode = MusicManager.GetCurrentGameMode();
+            var musicData = NewMusicManager.Instance.GetMusicData();
+            var gameMode = NewMusicManager.GetGameMode();
             perfect.text = "";
             great.text = "";
             good.text = "";
@@ -80,8 +80,8 @@ namespace _scenes.End {
             var goodCount = Counter.GetData(ScoreType.Good);
             var badCount = Counter.GetData(ScoreType.Bad);
             var missCount = Counter.GetData(ScoreType.Miss);
-            var noteData = musicData.GetNoteData(gameMode);
-            var totalCount = noteData?.Length ?? 0;
+            var noteData = musicData.GetMapData();
+            var totalCount = noteData.notes.Length;
             var currentScore = (float) Counter.GetScore();
             var final = (perfectCount + greatCount * 0.75f + goodCount * 0.25f + badCount * 0.025f) * 75 / totalCount + perfectCount * 25f / totalCount;
             var finalIndex = 9 - ((int) (Math.Round(final) / 10)).Between(9, 0);
