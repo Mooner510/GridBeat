@@ -172,6 +172,19 @@ namespace _scenes.Main {
             new(1f, 0.37f, 0.76f)
         };
 
+        private float _lastClick;
+
+        private bool Check() {
+            if (_lastClick == 0) {
+                _lastClick = Time.realtimeSinceStartup;
+                return true;
+            }
+
+            if (_lastClick + 0.15f > Time.realtimeSinceStartup) return false;
+            _lastClick = Time.realtimeSinceStartup;
+            return true;
+        }
+
         private void Update() {
             // if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) {
             //     speedUp.text = "X ++";
@@ -186,11 +199,19 @@ namespace _scenes.Main {
             //     speedUp.color = speedDown.color = DefaultColor;
             //     shiftText.color = Unshift;
             // }
+            
+            if(!Check()) return;
 
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
                 TextUpdate(false);
-            } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+            } else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
                 TextUpdate(true);
+            } else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
+                NewMusicManager.DifficultyUp();
+                Refresh(NewMusicManager.Instance.GetMusicData());
+            } else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
+                NewMusicManager.DifficultyDown();
+                Refresh(NewMusicManager.Instance.GetMusicData());
             } else if (Input.GetKeyDown(KeyCode.Return)) {
                 if (setting.activeSelf) {
                     setting.SetActive(false);
