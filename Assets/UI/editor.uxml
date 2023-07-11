@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/editor.uss?fileID=7433441132597879392&amp;guid=298d5685224a2474385108ecba0b7d40&amp;type=3#editor" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement style="padding-top: 90px; padding-bottom: 150px;">
+            <ui:ListView focusable="true" name="editorList" style="height: 100%; width: 350px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-left-width: 0; border-right-width: 4px; border-top-width: 4px; border-bottom-width: 4px; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 32px; border-bottom-right-radius: 32px;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="padding-top: 120px;">
+            <ui:Button display-tooltip-when-elided="true" class="categoryButtonSelected">
+                <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Images/Icons/music-2-fill.svg?fileID=7388822144124034973&amp;guid=39ca1e725d4d57e498407528411dd1fc&amp;type=3#music-2-fill&apos;); width: 24px; height: 24px;" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" class="categoryButton">
+                <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Images/Icons/file-text-fill.svg?fileID=7388822144124034973&amp;guid=6fd1118feb869e942b03194024e6212c&amp;type=3#file-text-fill&apos;); width: 24px; height: 24px;" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" class="categoryButton">
+                <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Images/Icons/image-2-fill.svg?fileID=7388822144124034973&amp;guid=8fdbeee9d0e866d478af5d1bedb3a67a&amp;type=3#image-2-fill&apos;); width: 24px; height: 24px;" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

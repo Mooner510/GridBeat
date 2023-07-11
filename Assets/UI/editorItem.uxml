@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="item" src="project://database/Assets/UI/item.uxml?fileID=9197481963319205126&amp;guid=006fdec5b4f058041ad0cee3251891e3&amp;type=3#item" />
+    <ui:Instance template="item" name="item" />
+</ui:UXML>

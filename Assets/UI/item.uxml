@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="padding-top: 8px; padding-bottom: 8px;">
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="itemLabel" style="font-size: 24px; margin-bottom: 4px;" />
+        <ui:TextField picking-mode="Ignore" value="filler text" text="filler text" name="itemInput" style="margin-left: 20px; font-size: 16px;" />
+    </ui:VisualElement>
+</ui:UXML>
