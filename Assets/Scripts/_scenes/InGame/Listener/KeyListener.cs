@@ -53,7 +53,7 @@ namespace _scenes.InGame.Listener {
         }
 
         public void Update() {
-            if (!MusicManager.Instance.IsPlayMode() && Input.GetKeyDown(KeyCode.Backspace)) {
+            if (!NewMusicManager.Instance.IsPlayMode() && Input.GetKeyDown(KeyCode.Backspace)) {
                 Player.Player.Instance.Stop(true);
                 return;
             }
@@ -124,7 +124,7 @@ namespace _scenes.InGame.Listener {
 
         protected void Spawn(LiveNoteData data, ScoreType score) {
             Debug.Log($"{data.time}, {score.GetTag()}");
-            var obj = Instantiate(scoreImage, GameUtils.LocationToCanvas(GameUtils.Locator(MusicManager.GetCurrentGameMode(), data.note)), Quaternion.identity);
+            var obj = Instantiate(scoreImage, GameUtils.LocationToCanvas(GameUtils.Locator(NewMusicManager.GetGameMode(), data.note)), Quaternion.identity);
             obj.transform.SetParent(GameUtils.Canvas.transform, false);
             obj.sprite = sprites[(int) score];
             increases.text = $"+{Counter.Instance.Count(data.note, score):n0}";

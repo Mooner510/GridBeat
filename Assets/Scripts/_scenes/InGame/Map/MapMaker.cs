@@ -48,7 +48,7 @@ namespace _scenes.InGame.Map {
         public virtual IEnumerator Beat(int note) {
             for (var time = 0f; time <= 0.5f; time += Time.deltaTime) {
                 for (var i = 0; i < 9; i++) {
-                    var pos = GameUtils.Locator(MusicManager.GetCurrentGameMode(), i);
+                    var pos = GameUtils.Locator(MusicManager.GetGameMode(), i);
                     notes[i].transform.localPosition = pos * (1 + (0.5f - time) / 8);
                     notes[i].transform.localScale = Vector3.one * (2 + (0.5f - time) / 3);
                     backNotes[i].transform.localPosition = pos * (1 + (0.5f - time) / 8);

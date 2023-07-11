@@ -65,7 +65,7 @@ namespace _scenes.End {
 
         private IEnumerator Animation() {
             var musicData = MusicManager.Instance.GetCurrentMusicData();
-            var gameMode = MusicManager.GetCurrentGameMode();
+            var gameMode = MusicManager.GetGameMode();
             perfect.text = "";
             great.text = "";
             good.text = "";

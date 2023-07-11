@@ -13,9 +13,9 @@ namespace _scenes.Edit {
     [Serializable]
     public class MusicInfo {
         public string musicPath;
-        public decimal bpm;
+        public float bpm;
         public float volume;
-        public decimal offset;
+        public float offset;
         public float pitch;
         public int playTime;
     }
