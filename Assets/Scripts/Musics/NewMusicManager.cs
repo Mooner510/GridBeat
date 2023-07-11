@@ -13,7 +13,7 @@ namespace Musics {
         private List<NewMusicData> _keypadMusic;
         private int _quadSelection;
         private int _keypadSelection;
-        private static GameMode _gameMode = GameMode.Keypad;
+        private static GameMode _gameMode = GameMode.Quad;
         private static MusicDifficulty _difficulty = MusicDifficulty.Easy;
 
         public static void SetGameMode(GameMode gameMode) => _gameMode = gameMode;

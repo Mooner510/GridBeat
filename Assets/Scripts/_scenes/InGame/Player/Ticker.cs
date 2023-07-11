@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using _scenes.InGame.Listener;
 using Musics;
 using Musics.Data;
@@ -9,7 +10,6 @@ namespace _scenes.InGame.Player {
         [SerializeField] private AudioSource beatSound;
         [SerializeField] private AudioSource musicSound;
 
-        private bool _readTick;
         private float _writeTime;
         private float _focusOutTime;
 
@@ -19,8 +19,6 @@ namespace _scenes.InGame.Player {
             // _beat = true;
         }
 
-        public bool IsTickReading() => _readTick;
-
         public float GetStartTime() => _writeTime;
 
         private void OnApplicationFocus(bool hasFocus) {
@@ -28,14 +26,13 @@ namespace _scenes.InGame.Player {
             else _focusOutTime = Time.realtimeSinceStartup;
         }
 
-        public float GetPlayTime() => Time.realtimeSinceStartup - _writeTime;
+        public float GetPlayTime() => (Time.realtimeSinceStartup - _writeTime) * 1000;
 
         public void ResetWrite() => _writeTime = Time.realtimeSinceStartup;
 
         public void Write(float after) {
             Debug.Log("Write Start");
             _writeTime = Time.realtimeSinceStartup + after;
-            _readTick = true;
             StartCoroutine(PlayIt(after));
         }
 
@@ -47,8 +44,6 @@ namespace _scenes.InGame.Player {
 
         public void StopWrite() {
             Debug.Log("Write Stop");
-            if(!_readTick) return;
-            _readTick = false;
             // if (_routine == null) return;
             // StopCoroutine(_routine);
             musicSound.Stop();
@@ -56,8 +51,6 @@ namespace _scenes.InGame.Player {
 
         public void StopWriteSoftness() {
             Debug.Log("Write Stop");
-            if(!_readTick) return;
-            _readTick = false;
             // if (_routine == null) return;
             // StopCoroutine(_routine);
             StartCoroutine(StopMusic());
@@ -73,7 +66,6 @@ namespace _scenes.InGame.Player {
         }
 
         private void Update() {
-            if (!_readTick) return;
             if (NewNoteManager.IsTop(0)) return;
             Tick();
         }

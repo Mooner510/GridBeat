@@ -32,7 +32,7 @@ namespace _scenes.InGame.Map {
         public GameObject GetNote(int index) => notes[index];
 
         public void Click(int note) {
-            if(routines[note] is not null) StopCoroutine(routines[note]);
+            if(routines[note] != null) StopCoroutine(routines[note]);
             routines[note] = StartCoroutine(Clicking(note));
         }
 

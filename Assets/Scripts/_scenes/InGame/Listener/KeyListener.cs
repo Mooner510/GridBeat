@@ -52,13 +52,7 @@ namespace _scenes.InGame.Listener {
         }
 
         public void Update() {
-            if (Input.GetKeyDown(KeyCode.Backspace)) {
-                Player.Player.Instance.Stop();
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Escape)) {
-                if (!Ticker.Instance.IsTickReading()) return;
+            if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Escape)) {
                 Player.Player.Instance.Stop();
                 return;
             }
@@ -86,7 +80,7 @@ namespace _scenes.InGame.Listener {
                 var ticker = Ticker.Instance;
                 liveNoteData.Click();
                 var diff = Math.Abs(liveNoteData.note.offset - ticker.GetPlayTime());
-                Debug.Log($"{liveNoteData.note.offset}: {diff}s");
+                Debug.Log($"{liveNoteData.note.offset}: {diff:#,0}ms");
                 Spawn(liveNoteData, NewNoteManager.GetPerfect(diff));
             }
             // } else {

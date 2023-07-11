@@ -5,7 +5,6 @@ namespace PlayerData.Entity {
     [Serializable]
     public class UserData {
         public KeyData keyData = new();
-        public NoteData noteData = new();
     }
 
     [Serializable]
@@ -20,10 +19,5 @@ namespace PlayerData.Entity {
         public KeyCode[] quadKey2 = {
             KeyCode.Keypad5, KeyCode.Keypad6, KeyCode.Keypad7, KeyCode.KeypadMinus
         };
-    }
-
-    [Serializable]
-    public class NoteData {
-        public float noteSpeed = 0.5f;
     }
 }

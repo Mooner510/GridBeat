@@ -10,16 +10,20 @@ namespace Musics.Data {
         private static int _noteSpeed = 80;
         private static float _noteTime = 1;
         private static float _allowedTime = 0.3f;
+        private static int _inputDelay;
 
         public static float GetNoteSpeed() => _noteSpeed / 10f;
         public static float GetNoteTime() => _noteTime;
         public static float GetNoteAllowedTime() => _allowedTime;
-
+        public static int GetInputDelay() => _inputDelay;
+        public static void SetInputDelay(int value) => _inputDelay = value;
+        
         public static ScoreType GetPerfect(float diff) {
-            if (diff <= _allowedTime / 4f) return ScoreType.Perfect;
-            if (diff <= _allowedTime / 3f) return ScoreType.Great;
-            if (diff <= _allowedTime / 1.65f) return ScoreType.Good;
-            return diff <= _allowedTime ? ScoreType.Bad : ScoreType.Miss;
+            diff -= _inputDelay;
+            if (diff <= _allowedTime * 1000 / 4f) return ScoreType.Perfect;
+            if (diff <= _allowedTime * 1000 / 3f) return ScoreType.Great;
+            if (diff <= _allowedTime * 1000 / 1.65f) return ScoreType.Good;
+            return diff <= _allowedTime * 1000 ? ScoreType.Bad : ScoreType.Miss;
         }
 
         private static void FixTime() {
@@ -57,6 +61,9 @@ namespace Musics.Data {
         public static PlayableNote[] GetNoteData() => _noteData;
 
         public static void Start(float after) {
+            _index = 0;
+            LoadCurrentData();
+            Debug.Log($"Loaded Note Data: {_noteData.Length}");
             Debug.Log("Data Start");
             Ticker.Instance.Write(after);
         }

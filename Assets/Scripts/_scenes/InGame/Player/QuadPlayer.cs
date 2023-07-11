@@ -18,11 +18,9 @@ namespace _scenes.InGame.Player {
             
             var location = GameUtils.Locator(GameMode.Quad, note.note.key);
             var obj = Instantiate(beatInspector, location * 5f, Quaternion.identity);
-            var spriteRenderer = obj.GetComponent<SpriteRenderer>();
             obj.transform.DOMove(location, time).SetEase(Ease.Linear);
             yield return new WaitForSecondsRealtime(time - KeyListener.AllowedTime);
             KeyListener.Instance.Queue(note);
-            spriteRenderer.color = ClickColor;
             yield return new WaitForSecondsRealtime(KeyListener.AllowedTime);
             obj.transform.DOScale(Vector3.one * 2.25f, KeyListener.AllowedTime).SetEase(Ease.OutCubic);
             StartCoroutine(Follow(obj, note.note.key));

@@ -8,7 +8,8 @@ namespace PlayerData {
         public PlayerData() => Load();
 
         private void Load() {
-            _userData = Json.LoadJsonFile<UserData>("Assets/Data/userData");
+            // _userData = Json.LoadJsonFile<UserData>("Assets/Data/userData") ?? new UserData();
+            _userData = new UserData();
         }
 
         public UserData GetUserData() => _userData;

@@ -31,6 +31,7 @@ namespace _scenes.Main {
         [Header("Utils")]
         [SerializeField] private SpriteRenderer hider;
         [SerializeField] private AudioSource audioPlayer;
+        [SerializeField] private GameObject setting;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject image;
@@ -190,6 +191,14 @@ namespace _scenes.Main {
                 TextUpdate(false);
             } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
                 TextUpdate(true);
+            } else if (Input.GetKeyDown(KeyCode.Return)) {
+                if (setting.activeSelf) {
+                    setting.SetActive(false);
+                    audioPlayer.DOFade(1, 1f);
+                } else {
+                    setting.SetActive(true);
+                    audioPlayer.DOFade(0, 1f);
+                }
             }
 
             // } else {
