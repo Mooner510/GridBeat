@@ -14,6 +14,8 @@ namespace _scenes.InGame.Player {
         [SerializeField] private SpriteRenderer hider;
         // [SerializeField] private Text recording;
 
+        [SerializeField] protected Sprite[] arrows;
+
         private static readonly Color ClickColor = new(0f, 0.8f, 0.8f, 0.3f);
 
         private void Start() {
@@ -34,7 +36,7 @@ namespace _scenes.InGame.Player {
                 yield return null;
             }
             hider.color = Color.black;
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("End");
         }
 
         private IEnumerator Init() {
@@ -65,14 +67,11 @@ namespace _scenes.InGame.Player {
             // // 아에 안 멈출거 같은데?
             // if(time > 0) yield return new WaitForSecondsRealtime(time);
             var obj = Instantiate(beatInspector, GameUtils.Locator(GameMode.Keypad, note.note.key), Quaternion.identity);
-            var spriteRenderer = obj.GetComponent<SpriteRenderer>();
-            
             StartCoroutine(Follow(obj, note.note.key));
             
             obj.transform.DOScale(Vector3.one * 2f, time).SetEase(Ease.Linear);
             yield return new WaitForSecondsRealtime(time - KeyListener.AllowedTime);
             KeyListener.Instance.Queue(note);
-            spriteRenderer.color = ClickColor;
             yield return new WaitForSecondsRealtime(KeyListener.AllowedTime);
             obj.transform.DOScale(Vector3.one * 2.35f, KeyListener.AllowedTime).SetEase(Ease.Linear);
             yield return new WaitForSecondsRealtime(KeyListener.AllowedTime);

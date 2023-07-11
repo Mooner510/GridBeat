@@ -8,8 +8,6 @@ using Utils;
 
 namespace _scenes.InGame.Player {
     public class QuadPlayer : Player {
-
-        private static readonly Color ClickColor = new(0f, 0.8f, 0.8f, 0.5f);
         
         public override IEnumerator Accept(PlayableNote note, float time) {
             // if(time > 0) yield return new WaitForSecondsRealtime(time);
@@ -17,7 +15,8 @@ namespace _scenes.InGame.Player {
             // var noteTime = KeyListener.NoteTime / 2 - KeyListener.AllowedTime;
             
             var location = GameUtils.Locator(GameMode.Quad, note.note.key);
-            var obj = Instantiate(beatInspector, location * 5f, Quaternion.identity);
+            var obj = Instantiate(beatInspector, location * 8f, Quaternion.identity);
+            obj.GetComponent<SpriteRenderer>().sprite = arrows[note.note.key];
             obj.transform.DOMove(location, time).SetEase(Ease.Linear);
             yield return new WaitForSecondsRealtime(time - KeyListener.AllowedTime);
             KeyListener.Instance.Queue(note);
