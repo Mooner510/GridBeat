@@ -8,7 +8,7 @@ namespace Utils {
         public static Vector2 Locator(GameMode gameMode, int n) => gameMode == GameMode.Keypad ?
             new Vector2(-3 + 3 * (n % 3), 3 - 3 * (n / 3)) :
             // ReSharper disable once PossibleLossOfFraction
-            new Vector2(-1.25f + 2.5f * (n % 2), -1.25f + 2.5f * (n / 2));
+            new Vector2(-1.25f + 2.5f * (n % 2), 1.25f - 2.5f * (n / 2));
 
         private static RectTransform _canvas;
 
