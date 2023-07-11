@@ -7,25 +7,20 @@ using Utils;
 namespace _scenes.InGame.Map {
     public class MapMaker : SingleMono<MapMaker> {
         protected GameObject[] notes;
-        protected GameObject[] backNotes;
         protected SpriteRenderer[] noteRenderers;
-        protected SpriteRenderer[] backNoteRenderers;
         [SerializeField] protected GameObject beatButton;
         [SerializeField] protected GameObject beatBackButton;
+        [SerializeField] protected Sprite[] noteSprites;
 
         protected Coroutine[] routines;
 
         private void Start() {
             notes = new GameObject[9];
             noteRenderers = new SpriteRenderer[9];
-            backNotes = new GameObject[9];
-            backNoteRenderers = new SpriteRenderer[9];
             routines = new Coroutine[9];
             for (var i = 0; i < 9; i++) {
-                backNoteRenderers[i] = (backNotes[i] = Instantiate(beatBackButton, GameUtils.Locator(GameMode.Keypad, i), Quaternion.identity))
-                    .GetComponent<SpriteRenderer>();
-                noteRenderers[i] = (notes[i] = Instantiate(beatButton, GameUtils.Locator(GameMode.Keypad, i), Quaternion.identity))
-                    .GetComponent<SpriteRenderer>();
+                (noteRenderers[i] = (notes[i] = Instantiate(beatButton, GameUtils.Locator(GameMode.Keypad, i), Quaternion.identity))
+                    .GetComponent<SpriteRenderer>()).sprite = noteSprites[i];
             }
         }
 
@@ -51,8 +46,6 @@ namespace _scenes.InGame.Map {
                     var pos = GameUtils.Locator(NewMusicManager.GetGameMode(), i);
                     notes[i].transform.localPosition = pos * (1 + (0.5f - time) / 8);
                     notes[i].transform.localScale = Vector3.one * (2 + (0.5f - time) / 3);
-                    backNotes[i].transform.localPosition = pos * (1 + (0.5f - time) / 8);
-                    backNotes[i].transform.localScale = Vector3.one * (0.4f - time * 0.45f / 3);
                 }
                 yield return null;
             }
