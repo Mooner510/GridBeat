@@ -21,7 +21,7 @@ namespace Musics {
     }
     
     [Serializable]
-    public struct NewMusicData {
+    public class NewMusicData {
         public NewMusicInfo musicInfo;
         public Dictionary<MusicDifficulty, MapData> mapData;
         [CanBeNull] public VideoClip video;

@@ -18,11 +18,19 @@ namespace Musics.Data {
         public static int GetInputDelay() => _inputDelay;
         public static void SetInputDelay(int value) => _inputDelay = value;
         
+        // public static ScoreType GetPerfect(float diff) {
+        //     diff -= _inputDelay;
+        //     if (diff <= _allowedTime * 1000 / 4f) return ScoreType.Perfect;
+        //     if (diff <= _allowedTime * 1000 / 3f) return ScoreType.Great;
+        //     if (diff <= _allowedTime * 1000 / 1.65f) return ScoreType.Good;
+        //     return diff <= _allowedTime * 1000 ? ScoreType.Bad : ScoreType.Miss;
+        // }
+        
         public static ScoreType GetPerfect(float diff) {
             diff -= _inputDelay;
-            if (diff <= _allowedTime * 1000 / 4f) return ScoreType.Perfect;
-            if (diff <= _allowedTime * 1000 / 3f) return ScoreType.Great;
-            if (diff <= _allowedTime * 1000 / 1.65f) return ScoreType.Good;
+            if (diff <= _allowedTime * 1000 / 3f) return ScoreType.Perfect;
+            if (diff <= _allowedTime * 1000 / 2f) return ScoreType.Great;
+            if (diff <= _allowedTime * 1000 / 1.2f) return ScoreType.Good;
             return diff <= _allowedTime * 1000 ? ScoreType.Bad : ScoreType.Miss;
         }
 

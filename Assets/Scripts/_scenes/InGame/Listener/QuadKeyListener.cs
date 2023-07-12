@@ -7,12 +7,13 @@ using UnityEngine;
 namespace _scenes.InGame.Listener {
     public class QuadKeyListener : KeyListener {
         protected override void SetUp() {
-            keyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey;
+            var keyData = PlayerData.PlayerData.Instance.GetUserData().keyData;
+            keyCodes = new[] {keyData.quadKey, keyData.quadKey2};
             Debug.Log(keyCodes);
             noteQueue = new Queue<PlayableNote>[4];
             for (var i = 0; i < 4; i++) noteQueue[i] = new Queue<PlayableNote>();
         }
-        
+
         protected override IEnumerator Enqueue(PlayableNote data) {
             // while (NoteQueue[data.note].Count > 1) {
             //     NoteQueue[data.note].Dequeue().Click();

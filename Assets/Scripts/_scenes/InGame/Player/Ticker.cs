@@ -40,6 +40,7 @@ namespace _scenes.InGame.Player {
             yield return new WaitForSecondsRealtime(after);
             // _routine = StartCoroutine(ReadTick());
             musicSound.PlayOneShot(NewMusicManager.Instance.GetMusicData().audio);
+            BackgroundShower.shower.Play();
         }
 
         public void StopWrite() {

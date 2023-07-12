@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -17,7 +18,10 @@ namespace _scenes.Main.Setting {
         [SerializeField] private TextMeshProUGUI delayText;
 
         [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip snare;
         [SerializeField] private GameObject parent;
+
+        [SerializeField] private bool keyCheck;
 
         private Queue<float> _lastTimes;
 
@@ -76,8 +80,22 @@ namespace _scenes.Main.Setting {
         private float _lastTime;
         private float _lastClick;
 
+        private bool CheckJoyStick() => PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey2.Any(Input.GetKey);
+
         private void Update() {
-            if (!Input.anyKeyDown || Input.inputString == null || Input.inputString.Length <= 0) return;
+            if(!Input.anyKeyDown) return;
+
+            if (keyCheck) {
+                foreach(KeyCode code in Enum.GetValues(typeof(KeyCode)))
+                {
+                    if (Input.GetKey(code)) Debug.Log("KeyCode down: " + code);
+                }
+            }
+            
+            if (!CheckJoyStick()) {
+                if (Input.inputString == null || Input.inputString.Length <= 0) return;
+            }
+
             _lastTime = Time.realtimeSinceStartup - (_startTime + NewNoteManager.GetNoteAllowedTime());
             if (_lastTimes.Count > 0 && _lastClick != 0 && Time.realtimeSinceStartup - _lastClick > 3) {
                 _lastTimes = new Queue<float>();
@@ -148,7 +166,7 @@ namespace _scenes.Main.Setting {
 
             yield return new WaitForSeconds(NewNoteManager.GetNoteAllowedTime());
             
-            audioSource.PlayOneShot(audioSource.clip);
+            audioSource.PlayOneShot(snare);
             Destroy(obj);
             _objectQueue.Dequeue();
         }

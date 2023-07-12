@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NoteBack
       objectReference: {fileID: 0}
+    - target: {fileID: 9033353297474208209, guid: 05f8a2ff0c439754cb534fe0019e35ce, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f8a2ff0c439754cb534fe0019e35ce, type: 3}
 --- !u!1 &147281474
@@ -826,7 +830,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 41dc0ca7203593c4ea73a45cf79b45a9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 838924e2ebf827c44a8414e996f2a50e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 0.96
@@ -1480,7 +1484,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00062561035}
+  m_AnchoredPosition: {x: 0, y: -0.00061035156}
   m_SizeDelta: {x: -1, y: -0.94000244}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1935209436
@@ -1810,7 +1814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1079121543401287348, guid: 588943c6f3f535a4cb65713d8b1fdb99, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1079121543401287350, guid: 588943c6f3f535a4cb65713d8b1fdb99, type: 3}
       propertyPath: m_RootOrder

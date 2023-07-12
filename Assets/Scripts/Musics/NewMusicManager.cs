@@ -6,6 +6,7 @@ using Musics.Data;
 using UnityEngine;
 using UnityEngine.Video;
 using Utils;
+using Object = System.Object;
 
 namespace Musics {
     public class NewMusicManager : SingleTon<NewMusicManager> {
@@ -22,14 +23,14 @@ namespace Musics {
 
         public static void DifficultyUp() {
             var maps = Instance.GetMusicData().mapData;
-            do _difficulty = _difficulty.Next();
-            while (maps.ContainsKey(_difficulty));
+            do {_difficulty = _difficulty.Next();}
+            while (!maps.ContainsKey(_difficulty));
         }
 
         public static void DifficultyDown() {
             var maps = Instance.GetMusicData().mapData;
-            do _difficulty = _difficulty.Prev();
-            while (maps.ContainsKey(_difficulty));
+            do {_difficulty = _difficulty.Prev();}
+            while (!maps.ContainsKey(_difficulty));
         }
 
         public static MusicDifficulty GetDifficulty() => _difficulty;
@@ -40,8 +41,11 @@ namespace Musics {
 
         private int GetMusics() => _gameMode == GameMode.Keypad ? _keypadMusic.Count : _quadMusic.Count;
 
-        public NewMusicData GetMusicData() =>
-            _gameMode == GameMode.Keypad ? _keypadMusic[_keypadSelection % _keypadMusic.Count] : _quadMusic[_quadSelection % _quadMusic.Count];
+        public NewMusicData GetMusicData() {
+            var data = _gameMode == GameMode.Keypad ? _keypadMusic[_keypadSelection % _keypadMusic.Count] : _quadMusic[_quadSelection % _quadMusic.Count];
+            while (!data.mapData.ContainsKey(_difficulty)) _difficulty = _difficulty.Next();
+            return data;
+        }
 
         public NewMusicData GetMusicData(int addition) =>
             _gameMode == GameMode.Keypad
@@ -83,7 +87,8 @@ namespace Musics {
 
             List<NewMusicData> quadMusic = new List<NewMusicData>();
             List<NewMusicData> keypadMusic = new List<NewMusicData>();
-            var directories = Directory.GetDirectories("Assets/Resources/Maps");
+            var directories = FileUtils.GetDirectories("Assets/Resources/Maps");
+            if (directories.Length <= 0) directories = FileUtils.GetDirectories("BeatTable_Data/Resources/Maps");
             Debug.Log($"Founded Maps: {string.Join(", ", directories)}");
             foreach (var directory in directories) {
                 var info = Json.LoadJsonFile<NewMusicInfo>($"{directory}/data.json");
@@ -98,7 +103,7 @@ namespace Musics {
                     }
                 }
 
-                var newPath = directory[17..].Replace('\\', '/');
+                var newPath = directory[directory.IndexOf("Maps", StringComparison.Ordinal)..].Replace('\\', '/');
                 Debug.Log($"DIR: {newPath}");
                 var musicData = new NewMusicData {
                     musicInfo = info,
@@ -116,6 +121,12 @@ namespace Musics {
             _quadMusic = quadMusic;
             _keypadMusic = keypadMusic;
             Debug.Log("Reloaded All Musics Completely");
+        }
+
+        private static T LoadResources<T>(string path) where T : UnityEngine.Object {
+            var load = Resources.Load<T>(path);
+            Debug.Log(load == null ? $"No Load: {path}" : $"Yes Load: {path}");
+            return load;
         }
     }
 }

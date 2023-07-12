@@ -24,7 +24,7 @@ namespace _scenes.InGame.Listener {
         private KeyCode _code;
 
         protected Queue<PlayableNote>[] noteQueue;
-        protected KeyCode[] keyCodes;
+        protected KeyCode[][] keyCodes;
 
         private void Start() {
             SetUp();
@@ -45,7 +45,7 @@ namespace _scenes.InGame.Listener {
         }
 
         protected virtual void SetUp() {
-            keyCodes = PlayerData.PlayerData.Instance.GetUserData().keyData.keypadKey;
+            keyCodes = new[] {PlayerData.PlayerData.Instance.GetUserData().keyData.keypadKey};
             Debug.Log(keyCodes);
             noteQueue = new Queue<PlayableNote>[9];
             for (var i = 0; i < 9; i++) noteQueue[i] = new Queue<PlayableNote>();
@@ -64,24 +64,26 @@ namespace _scenes.InGame.Listener {
             // }
 
             // if (MusicManager.GetCurrentGameMode() == GameMode.Keypad) {
-            for (var i = 0; i < keyCodes.Length; i++) {
-                _code = keyCodes[i];
-                if (!Input.GetKeyDown(_code)) continue;
-                Debug.Log($"id: {i}");
-                MapMaker.Instance.Click(i);
-                Ticker.Instance.Beat();
-                PlayableNote liveNoteData = null;
-                while (noteQueue[i].Count > 0 && liveNoteData == null) {
-                    liveNoteData = noteQueue[i].Dequeue();
-                    if (liveNoteData.isClicked) liveNoteData = null;
-                }
+            foreach (var keys in keyCodes) {
+                for (var i = 0; i < keys.Length; i++) {
+                    _code = keys[i];
+                    if (!Input.GetKeyDown(_code)) continue;
+                    Debug.Log($"id: {i}");
+                    MapMaker.Instance.Click(i);
+                    Ticker.Instance.Beat();
+                    PlayableNote liveNoteData = null;
+                    while (noteQueue[i].Count > 0 && liveNoteData == null) {
+                        liveNoteData = noteQueue[i].Dequeue();
+                        if (liveNoteData.isClicked) liveNoteData = null;
+                    }
 
-                if (liveNoteData == null) return;
-                var ticker = Ticker.Instance;
-                liveNoteData.Click();
-                var diff = Math.Abs(liveNoteData.note.offset - ticker.GetPlayTime());
-                Debug.Log($"{liveNoteData.note.offset}: {diff:#,0}ms");
-                Spawn(liveNoteData, NewNoteManager.GetPerfect(diff));
+                    if (liveNoteData == null) return;
+                    var ticker = Ticker.Instance;
+                    liveNoteData.Click();
+                    var diff = Math.Abs(liveNoteData.note.offset - ticker.GetPlayTime());
+                    Debug.Log($"{liveNoteData.note.offset}: {diff:#,0}ms");
+                    Spawn(liveNoteData, NewNoteManager.GetPerfect(diff));
+                }
             }
             // } else {
             //     var quadKey2 = PlayerData.PlayerData.Instance.GetUserData().keyData.quadKey2;

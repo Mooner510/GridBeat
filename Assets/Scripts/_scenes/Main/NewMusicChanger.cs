@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using DG.Tweening;
 using Musics;
 using Musics.Data;
@@ -63,16 +64,30 @@ namespace _scenes.Main {
         private bool _canStart;
         private Sequence[] _sequences;
 
+        [SerializeField] private TextMeshProUGUI text;
+
+        private void Awake() {
+            // var directories = FileUtils.GetDirectories("BeatTable_Data/Resources/Maps");
+            // text.text = $"{string.Join(", ", directories)}\n{directories[0].IndexOf("Maps", StringComparison.Ordinal)}\n{directories[0][directories[0].IndexOf("Maps", StringComparison.Ordinal)..]}";
+        }
+
         private void Start() {
             hider.color = Color.clear;
             audioPlayer.volume = 1;
+
+            var data = NewMusicManager.Instance.GetMusicData();
+
+            Debug.Log($"Validate 1: {data.image == null}");
+            Debug.Log($"Validate 2: {data.audio == null}");
+            Debug.Log($"Validate 3: {data.previewAudio == null}");
+            Debug.Log($"Validate 4: {data.background == null}");
 
             for (var i = -3; i <= 3; i++) {
                 var musicData = NewMusicManager.Instance.GetMusicData(i);
                 musicImages[i + 3].sprite = musicData.image;
             }
-
-            Refresh(NewMusicManager.Instance.GetMusicData());
+            
+            Refresh(data);
         }
 
         private void TextUpdate(
@@ -130,6 +145,17 @@ namespace _scenes.Main {
             audioPlayer.Play();
         }
 
+        private void Refresh() {
+            var musicData = NewMusicManager.Instance.GetMusicData();
+            var difficulty = NewMusicManager.GetDifficulty();
+            musicNameText.text = musicData.musicInfo.name;
+            musicArtistText.text = musicData.musicInfo.artist;
+            backgroundImage.sprite = musicData.blurImage;
+            musicDurationText.text = $"{musicData.musicInfo.playTime / 60:00}:{musicData.musicInfo.playTime % 60:00}";
+            musicLevelImage.sprite = musicLevelImages[musicData.mapData[difficulty].level - 1];
+            difficultyImage.sprite = difficultyImages[(int) difficulty];
+        }
+
         private static readonly Vector3 MainScale = new(1, 1, 1);
         private static readonly Vector3 BigScale = new(1.02f, 1.02f, 1.02f);
         
@@ -143,9 +169,13 @@ namespace _scenes.Main {
             }
         }
 
+        private bool _isStarting;
+
         private IEnumerator StartMusic(GameMode gameMode) {
+            if(_isStarting) yield break;
+            _isStarting = true;
+            
             audioPlayer.DOFade(0, 3);
-            yield return new WaitForSecondsRealtime(1);
             hider.DOColor(Color.black, 2).SetEase(Ease.OutCubic);
             yield return new WaitForSecondsRealtime(3);
             switch (gameMode) {
@@ -158,6 +188,8 @@ namespace _scenes.Main {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(gameMode), gameMode, null);
             }
+
+            _isStarting = false;
         }
 
         private static readonly Color[] SpeedColors = {
@@ -199,20 +231,7 @@ namespace _scenes.Main {
             //     speedUp.color = speedDown.color = DefaultColor;
             //     shiftText.color = Unshift;
             // }
-            
-            if(!Check()) return;
-
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-                TextUpdate(false);
-            } else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
-                TextUpdate(true);
-            } else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
-                NewMusicManager.DifficultyUp();
-                Refresh(NewMusicManager.Instance.GetMusicData());
-            } else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
-                NewMusicManager.DifficultyDown();
-                Refresh(NewMusicManager.Instance.GetMusicData());
-            } else if (Input.GetKeyDown(KeyCode.Return)) {
+            if (Input.GetKeyDown(KeyCode.Return)) {
                 if (setting.activeSelf) {
                     setting.SetActive(false);
                     audioPlayer.DOFade(1, 1f);
@@ -221,9 +240,28 @@ namespace _scenes.Main {
                     audioPlayer.DOFade(0, 1f);
                 }
             }
+            
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.JoystickButton8)) {
+                NewMusicManager.DifficultyUp();
+                Refresh();
+            } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.JoystickButton10)) {
+                NewMusicManager.DifficultyDown();
+                Refresh();
+            }
+                
+            if (Input.GetKeyDown(KeyCode.E)) {
+                StartCoroutine(StartMusic(GameMode.Quad));
+            }
+
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.JoystickButton9)) {
+                if(!Check()) return;
+                TextUpdate(false);
+            } else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.JoystickButton11)) {
+                if(!Check()) return;
+                TextUpdate(true);
+            }
 
             // } else {
-                var gameMode = NewMusicManager.GetGameMode();
                 // if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) ||
                 //     Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
                 //     if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) _sequences[2].Restart();
@@ -244,11 +282,6 @@ namespace _scenes.Main {
                 //     speedText.text = $"{NoteManager.GetNoteSpeed():F1}";
                 //     speedText.color = SpeedColors[(int) NoteManager.GetNoteSpeed() / 2];
                 //     _sequences[4].Restart();
-                
-                if (Input.GetKeyDown(KeyCode.E)) {
-                    StopCoroutine(StartMusic(gameMode));
-                    StartCoroutine(StartMusic(gameMode));
-                }
             // }
         }
     }

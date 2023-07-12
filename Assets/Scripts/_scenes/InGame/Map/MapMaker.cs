@@ -32,10 +32,10 @@ namespace _scenes.InGame.Map {
         }
 
         private IEnumerator Clicking(int note) {
-            noteRenderers[note].color = Color.yellow;
+            noteRenderers[note].color = Color.red;
             for (var i = 0f; i <= 0.5f; i += Time.deltaTime) {
                 yield return null;
-                noteRenderers[note].color = Color.yellow + (Color.white - Color.yellow) * i * 2;
+                noteRenderers[note].color = Color.red + (Color.white - Color.red) * i * 2;
             }
             noteRenderers[note].color = Color.white;
         }
