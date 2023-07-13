@@ -23,14 +23,16 @@ namespace Musics {
 
         public static void DifficultyUp() {
             var maps = Instance.GetMusicData().mapData;
-            do {_difficulty = _difficulty.Next();}
-            while (!maps.ContainsKey(_difficulty));
+            do {
+                _difficulty = _difficulty.Next();
+            } while (!maps.ContainsKey(_difficulty));
         }
 
         public static void DifficultyDown() {
             var maps = Instance.GetMusicData().mapData;
-            do {_difficulty = _difficulty.Prev();}
-            while (!maps.ContainsKey(_difficulty));
+            do {
+                _difficulty = _difficulty.Prev();
+            } while (!maps.ContainsKey(_difficulty));
         }
 
         public static MusicDifficulty GetDifficulty() => _difficulty;
@@ -42,23 +44,27 @@ namespace Musics {
         private int GetMusics() => _gameMode == GameMode.Keypad ? _keypadMusic.Count : _quadMusic.Count;
 
         public NewMusicData GetMusicData() {
-            var data = _gameMode == GameMode.Keypad ? _keypadMusic[_keypadSelection % _keypadMusic.Count] : _quadMusic[_quadSelection % _quadMusic.Count];
+            var data = _gameMode == GameMode.Keypad
+                ? _keypadMusic[_keypadSelection % _keypadMusic.Count]
+                : _quadMusic[_quadSelection % _quadMusic.Count];
             while (!data.mapData.ContainsKey(_difficulty)) _difficulty = _difficulty.Next();
             return data;
         }
 
         public NewMusicData GetMusicData(int addition) =>
             _gameMode == GameMode.Keypad
-                ? _keypadMusic[(_keypadSelection + addition+_keypadMusic.Count*3) % _keypadMusic.Count]
-                : _quadMusic[(_quadSelection + addition+_quadMusic.Count*3) % _quadMusic.Count];
+                ? _keypadMusic[(_keypadSelection + addition + _keypadMusic.Count * 3) % _keypadMusic.Count]
+                : _quadMusic[(_quadSelection + addition + _quadMusic.Count * 3) % _quadMusic.Count];
 
         public NewMusicData GetMusicDataAdd(int addition) =>
             _gameMode == GameMode.Keypad
-                ? _keypadMusic[(_keypadSelection += addition+_keypadMusic.Count*3) % _keypadMusic.Count]
-                : _quadMusic[(_quadSelection += addition+_quadMusic.Count*3) % _quadMusic.Count];
+                ? _keypadMusic[(_keypadSelection += addition + _keypadMusic.Count * 3) % _keypadMusic.Count]
+                : _quadMusic[(_quadSelection += addition + _quadMusic.Count * 3) % _quadMusic.Count];
 
         public NewMusicData GetMusicDataSet(int set) =>
-            _gameMode == GameMode.Keypad ? _keypadMusic[(_keypadSelection = set) % _keypadMusic.Count] : _quadMusic[(_quadSelection = set) % _quadMusic.Count];
+            _gameMode == GameMode.Keypad
+                ? _keypadMusic[(_keypadSelection = set) % _keypadMusic.Count]
+                : _quadMusic[(_quadSelection = set) % _quadMusic.Count];
 
         // public void UpdateCurrentMusicData() => _musicDataList[_selection] = _musics.musics[_selection].ToMusicData();
 
@@ -96,7 +102,8 @@ namespace Musics {
                 var mapDic = new Dictionary<MusicDifficulty, MapData>();
                 foreach (var difficulty in MusicDifficultyUtils.MusicDifficulties) {
                     try {
-                        mapDic.Add(difficulty, Json.LoadJsonFile<MapData>($"{directory}/map-{difficulty.ToString()}.json"));
+                        mapDic.Add(difficulty,
+                            Json.LoadJsonFile<MapData>($"{directory}/map-{difficulty.ToString()}.json"));
                         Debug.Log($"{directory} - Founded Level: {difficulty.ToString()}");
                     } catch {
                         // ignored

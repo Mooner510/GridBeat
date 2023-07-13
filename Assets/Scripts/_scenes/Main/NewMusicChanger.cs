@@ -77,11 +77,6 @@ namespace _scenes.Main {
 
             var data = NewMusicManager.Instance.GetMusicData();
 
-            Debug.Log($"Validate 1: {data.image == null}");
-            Debug.Log($"Validate 2: {data.audio == null}");
-            Debug.Log($"Validate 3: {data.previewAudio == null}");
-            Debug.Log($"Validate 4: {data.background == null}");
-
             for (var i = -3; i <= 3; i++) {
                 var musicData = NewMusicManager.Instance.GetMusicData(i);
                 musicImages[i + 3].sprite = musicData.image;
@@ -107,7 +102,7 @@ namespace _scenes.Main {
                 Array.Copy(musicImages, 1, copy, 0, musicImages.Length - 1);
                 var newImage = Instantiate(image, ImageLocations[^1], Quaternion.identity, GameUtils.Canvas).GetComponent<Image>();
                 newImage.rectTransform.localPosition = ImageLocations[^1];
-                newImage.sprite = NewMusicManager.Instance.GetMusicData(3).image;
+                newImage.sprite = NewMusicManager.Instance.GetMusicData(1).image;
                 copy[^1] = newImage;
                 musicImages = copy;
             } else {
@@ -123,10 +118,16 @@ namespace _scenes.Main {
                 Array.Copy(musicImages, 0, copy, 1, musicImages.Length - 1);
                 var newImage = Instantiate(image, ImageLocations[0], Quaternion.identity, GameUtils.Canvas).GetComponent<Image>();
                 newImage.rectTransform.localPosition = ImageLocations[0];
-                newImage.sprite = NewMusicManager.Instance.GetMusicData(-3).image;
+                newImage.sprite = NewMusicManager.Instance.GetMusicData(-1).image;
                 copy[0] = newImage;
                 musicImages = copy;
             }
+
+            Debug.Log($"Validate 1: {musicData.image == null}");
+            Debug.Log($"Validate 2: {musicData.audio == null}");
+            Debug.Log($"Validate 3: {musicData.previewAudio == null}");
+            Debug.Log($"Validate 4: {musicData.background == null}");
+            Debug.Log($"Validate 5: {musicData.video == null}");
 
             Refresh(musicData);
         }

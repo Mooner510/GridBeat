@@ -13,22 +13,22 @@ namespace _scenes.InGame {
 
         private void Start() {
             shower = this;
+            image.color = Color.clear;
+            video.clip = null;
+            
             var data = NewMusicManager.Instance.GetMusicData();
             if (data.video != null) {
+                Debug.Log("ADDED VIDEO");
                 video.clip = data.video;
-                return;
             }
-            video.clip = null;
 
-            if (data.background != null) {
-                image.sprite = data.background;
-                image.color = new Color(1, 1, 1, 0.3f);
-            } else {
-                image.color = Color.clear;
-            }
+            if (data.background == null) return;
+            image.sprite = data.background;
+            image.color = Color.white;
         }
 
         public void Play() {
+            video.Stop();
             if (video.clip != null) {
                 video.Play();
             }
