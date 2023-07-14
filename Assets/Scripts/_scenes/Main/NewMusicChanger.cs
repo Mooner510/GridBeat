@@ -232,7 +232,7 @@ namespace _scenes.Main {
             //     speedUp.color = speedDown.color = DefaultColor;
             //     shiftText.color = Unshift;
             // }
-            if (Input.GetKeyDown(KeyCode.Return)) {
+            if (Input.GetKeyDown(KeyCode.E)) {
                 if (setting.activeSelf) {
                     setting.SetActive(false);
                     audioPlayer.DOFade(1, 1f);
@@ -250,7 +250,7 @@ namespace _scenes.Main {
                 Refresh();
             }
                 
-            if (Input.GetKeyDown(KeyCode.E)) {
+            if (Input.GetKeyDown(KeyCode.Return)) {
                 StartCoroutine(StartMusic(GameMode.Quad));
             }
 
