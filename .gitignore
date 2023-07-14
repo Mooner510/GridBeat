@@ -146,3 +146,9 @@ crashlytics-build.properties
 
 *.pptx
 
+/Assets/StreamingAssets/
+*/Data/Maps/
+*/Resources/Karma/
+**/Resources/Maps/
+/NewBuild/
+
