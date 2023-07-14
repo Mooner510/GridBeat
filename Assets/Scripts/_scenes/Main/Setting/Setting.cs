@@ -7,7 +7,6 @@ using Musics.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
 
 namespace _scenes.Main.Setting {
     public class Setting : MonoBehaviour {
@@ -33,6 +32,7 @@ namespace _scenes.Main.Setting {
         private void Start() {
             instance = this;
             noteSpeed.text = $"{NewNoteManager.GetNoteSpeed():#.0}";
+            inputDelay.text = $"{NewNoteManager.GetInputDelay()}ms";
             inputDelay.onValueChanged.AddListener(value => {
                 if (int.TryParse(value, out var result)) {
                     SetInputDelay(result);
@@ -53,7 +53,6 @@ namespace _scenes.Main.Setting {
         }
 
         private void SetInputDelay(int value) {
-            Debug.Log($"SetAVG : {NewNoteManager.GetInputDelay()}");
             NewNoteManager.SetInputDelay(Mathf.Clamp(value, -999, 999));
             inputDelay.text = $"{NewNoteManager.GetInputDelay()}ms";
         }
