@@ -90,7 +90,7 @@ namespace _scenes.Main {
         ) {
             NewMusicData musicData;
             if (isRight) {
-                musicData = NewMusicManager.Instance.Back();
+                musicData = NewMusicManager.Instance.Next();
                 for (var i = -2; i <= 3; i++) {
                     var rectTransform = musicImages[i + 3].rectTransform;
                     rectTransform.DOLocalMove(ImageLocations[i + 2], 0.5f).SetEase(Ease.OutCubic);
@@ -102,11 +102,11 @@ namespace _scenes.Main {
                 Array.Copy(musicImages, 1, copy, 0, musicImages.Length - 1);
                 var newImage = Instantiate(image, ImageLocations[^1], Quaternion.identity, GameUtils.Canvas).GetComponent<Image>();
                 newImage.rectTransform.localPosition = ImageLocations[^1];
-                newImage.sprite = NewMusicManager.Instance.GetMusicData(1).image;
+                newImage.sprite = NewMusicManager.Instance.GetMusicData(3).image;
                 copy[^1] = newImage;
                 musicImages = copy;
             } else {
-                musicData = NewMusicManager.Instance.Next();
+                musicData = NewMusicManager.Instance.Back();
                 for (var i = -3; i <= 2; i++) {
                     var rectTransform = musicImages[i + 3].rectTransform;
                     rectTransform.DOLocalMove(ImageLocations[i + 4], 0.5f).SetEase(Ease.OutCubic);
@@ -118,7 +118,7 @@ namespace _scenes.Main {
                 Array.Copy(musicImages, 0, copy, 1, musicImages.Length - 1);
                 var newImage = Instantiate(image, ImageLocations[0], Quaternion.identity, GameUtils.Canvas).GetComponent<Image>();
                 newImage.rectTransform.localPosition = ImageLocations[0];
-                newImage.sprite = NewMusicManager.Instance.GetMusicData(-1).image;
+                newImage.sprite = NewMusicManager.Instance.GetMusicData(-3).image;
                 copy[0] = newImage;
                 musicImages = copy;
             }

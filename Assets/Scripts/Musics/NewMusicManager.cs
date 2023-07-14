@@ -44,9 +44,7 @@ namespace Musics {
         private int GetMusics() => _gameMode == GameMode.Keypad ? _keypadMusic.Count : _quadMusic.Count;
 
         public NewMusicData GetMusicData() {
-            var data = _gameMode == GameMode.Keypad
-                ? _keypadMusic[_keypadSelection % _keypadMusic.Count]
-                : _quadMusic[_quadSelection % _quadMusic.Count];
+            var data = _gameMode == GameMode.Keypad ? _keypadMusic[_keypadSelection] : _quadMusic[_quadSelection];
             while (!data.mapData.ContainsKey(_difficulty)) _difficulty = _difficulty.Next();
             return data;
         }
@@ -56,15 +54,17 @@ namespace Musics {
                 ? _keypadMusic[(_keypadSelection + addition + _keypadMusic.Count * 3) % _keypadMusic.Count]
                 : _quadMusic[(_quadSelection + addition + _quadMusic.Count * 3) % _quadMusic.Count];
 
-        public NewMusicData GetMusicDataAdd(int addition) =>
-            _gameMode == GameMode.Keypad
-                ? _keypadMusic[(_keypadSelection += addition + _keypadMusic.Count * 3) % _keypadMusic.Count]
-                : _quadMusic[(_quadSelection += addition + _quadMusic.Count * 3) % _quadMusic.Count];
+        public NewMusicData GetMusicDataAdd(int addition) {
+            if (_gameMode == GameMode.Keypad) _keypadSelection = (_keypadSelection + addition + _keypadMusic.Count) % _keypadMusic.Count;
+            else _quadSelection = (_quadSelection + addition + _quadMusic.Count) % _quadMusic.Count;
+            return GetMusicData();
+        }
 
-        public NewMusicData GetMusicDataSet(int set) =>
-            _gameMode == GameMode.Keypad
-                ? _keypadMusic[(_keypadSelection = set) % _keypadMusic.Count]
-                : _quadMusic[(_quadSelection = set) % _quadMusic.Count];
+        public NewMusicData GetMusicDataSet(int set) {
+            if (_gameMode == GameMode.Keypad) _keypadSelection = set % _keypadMusic.Count;
+            else _quadSelection = set % _quadMusic.Count;
+            return GetMusicData();
+        }
 
         // public void UpdateCurrentMusicData() => _musicDataList[_selection] = _musics.musics[_selection].ToMusicData();
 
