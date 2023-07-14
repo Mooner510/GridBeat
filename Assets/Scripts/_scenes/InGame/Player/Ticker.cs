@@ -58,9 +58,10 @@ namespace _scenes.InGame.Player {
         }
 
         private IEnumerator StopMusic() {
+            var startVol = musicSound.volume;
             for (var i = 0f; i <= 2; i += Time.deltaTime) {
                 yield return null;
-                musicSound.volume = 1 - 0.5f * i;
+                musicSound.volume = startVol * (i - 2) / 2;
             }
             musicSound.Stop();
             musicSound.volume = 1;
