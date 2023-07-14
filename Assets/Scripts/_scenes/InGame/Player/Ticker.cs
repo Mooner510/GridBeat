@@ -26,7 +26,7 @@ namespace _scenes.InGame.Player {
             else _focusOutTime = Time.realtimeSinceStartup;
         }
 
-        public float GetPlayTime() => (Time.realtimeSinceStartup - _writeTime) * 1000;
+        public float GetPlayTime() => (Time.realtimeSinceStartup - _writeTime) * 1000 - NewNoteManager.GetInputDelay();
 
         public void ResetWrite() => _writeTime = Time.realtimeSinceStartup;
 
